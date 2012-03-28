@@ -27,9 +27,7 @@ module CsvShaper
     end
     
     def columns(*args)
-      array = []
-      args.each { |i| array.push(i) }
-      @columns = array.map(&:to_sym)
+      @columns = args.map(&:to_sym)
     end
     
     def mapped_columns

@@ -15,8 +15,15 @@ module CsvShaper
       @head = Header.build(*args, &block)
     end
     
-    def row
-      @rows << "foo"
+    def row(*args, &block)
+      row = Row.new(*args, &block)
+      @rows.push(row)
+    end
+    
+    def rows(collection, &block)
+      collection.each do |element|
+        row(element, &block)
+      end
     end
     
     def encode!

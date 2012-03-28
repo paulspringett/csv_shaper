@@ -1,4 +1,5 @@
 require 'blankslate'
+require 'active_support/ordered_hash'
 
 require './lib/csv_shaper/version'
 require './lib/csv_shaper/header'
