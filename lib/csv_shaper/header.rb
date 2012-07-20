@@ -20,17 +20,19 @@ module CsvShaper
 
     def initialize(*args)
       @mappings = {}
-      
+      @columns = []
+
       # csv.headers do |head|
       if block_given?
+        puts "block was given!"
         yield self
       elsif args.any?
         # csv.headers User
         if (@klass = args.first.respond_to?(:attribute_names) && args.first)
-          columns(@klass.attribute_names)
+          columns(*@klass.attribute_names)
         # csv.headers :name, :age, :location
         else
-          columns(args)
+          columns(*args)
         end
       end
     end
