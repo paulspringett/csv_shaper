@@ -32,7 +32,7 @@ module CsvShaper
         yield self, @model
       
       # csv.row do |csv|
-      when args.emtpy? && block_given?
+      when args.empty? && block_given?
         yield self
       
       # csv.row @user, :name, :age, :location
