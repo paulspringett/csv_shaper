@@ -10,15 +10,15 @@ users = [user]
 
 shaper = CsvShaper::Shaper.encode do |csv|
 
-  csv.header User do |header|
-    header.columns :name, :gender, :age, :foo, :bar
-    header.mappings name: "Full name", gender: "Sex"
+  csv.headers do |csv|
+    csv.columns :name, :gender, :age, :foo, :bar
+    csv.mappings name: "Full name", gender: "Sex"
   end
-
-  csv.row users do |csv, user|
+  
+  csv.rows users do |csv, user|
     csv.cells :name, :age
-    csv.cell :gender if user.human?
-    csv.cells :foo, :bar
+    csv.cell :gender
+    # csv.cells :foo, :bar
   end
 
 end
