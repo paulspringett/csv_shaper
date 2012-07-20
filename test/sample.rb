@@ -8,7 +8,7 @@ user.gender = "Male"
 
 users = [user]
 
-shaper = CsvShaper::Shaper.encode do |csv|
+csv = CsvShaper::Shaper.encode do |csv|
 
   csv.headers do |csv|
     csv.columns :name, :gender, :age
@@ -29,5 +29,4 @@ shaper = CsvShaper::Shaper.encode do |csv|
 
 end
 
-puts shaper.inspect
-puts shaper.header.inspect
+puts csv
