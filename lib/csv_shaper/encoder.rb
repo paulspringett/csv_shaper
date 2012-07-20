@@ -3,6 +3,10 @@ require 'csv'
 module CsvShaper
   class Encoder < BlankSlate
     def initialize(header, rows = [])
+      if header.nil?
+        raise MissingHeadersError, 'you must define some headers using csv.headers ...'
+      end
+      
       @header = header
       @rows = rows
     end

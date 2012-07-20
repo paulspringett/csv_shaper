@@ -7,3 +7,9 @@ require './lib/csv_shaper/header'
 require './lib/csv_shaper/row'
 require './lib/csv_shaper/encoder'
 require './lib/csv_shaper/shaper'
+
+module CsvShaper
+  
+  class MissingHeadersError < StandardError; end
+  
+end
