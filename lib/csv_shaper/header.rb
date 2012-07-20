@@ -1,40 +1,75 @@
 module CsvShaper
+  
+  # Header
+  # Handles creating and mapping of the headers
+  # Examples:
+  #   # assign the headers from the attributes of a class
+  #   csv.headers User
+  # 
+  #   # assigns headers normally
+  #   csv.headers :name, :age, :location
+  # 
+  #   # pass a block
+  #   csv.headers do |csv|
+  #     csv.columns :name, :age, :location
+  #     csv.mappings name: 'Full name, location: 'Region'
+  #   end
+  #
   class Header < BlankSlate
+    attr_reader :klass, :mappings, :mapped_columns
 
-    attr_reader :klass, :columns, :mappings, :mapped_columns
-
-    def self.build(*args)      
-      header = new(*args)
-      
-      if block_given?
-        header.tap { |header| yield header }
-      elsif header.klass && header.columns.empty?
-        header.columns(header.klass.attribute_names)
-      end
-      
-      header
-    end
-    
-    def initialize(klass, columns = [])
-      @klass = klass
-      @columns = columns
+    def initialize(*args)
       @mappings = {}
+      
+      # csv.headers do |head|
+      if block_given?
+        yield self
+      elsif args.any?
+        # csv.headers User
+        if (@klass = args.first.respond_to?(:attribute_names) && args.first)
+          columns(@klass.attribute_names)
+        # csv.headers :name, :age, :location
+        else
+          columns(args)
+        end
+      end
     end
     
+    # Public: serves as the getter and setter for the Array
+    # of Symbol column names. Union join the existing column
+    # names with those passed
+    # Example:
+    #   header.columns :name, :age, :location
+    #
+    #   args - Array of Symbol arguments passed
+    #
+    # Returns as Array of Symbols
+    def columns(*args)
+      @columns = @columns | args.map(&:to_sym)
+    end
+    
+    # Public: Define mappings of the Symbol column names
+    # to nicer, human names
+    # Example:
+    #   header.mappings name: 'Full name', age: 'Age of person'
+    #
+    #   hash - Hash of mappings where the key is the column name to map
+    #          and the value is the human readable value
+    #
+    # Returns a Hash of mappings
     def mappings(hash = {}) 
       @mappings.merge!(hash)
-      puts "mappings: #{@mappings.inspect}"
     end
     
-    def columns(*args)
-      @columns = args.map(&:to_sym)
-    end
-    
+    # Public: converts columns and mappings into mapped columns
+    # ready for encoding. If a mapped value is found that is used,
+    # else the Symbol column name is humanized
+    #
+    # Returns an Array of Strings
     def mapped_columns
       @columns.map do |column|
         @mappings[column] || column.to_s.humanize
       end
     end
-
   end
 end
