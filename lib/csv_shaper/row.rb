@@ -19,7 +19,6 @@ module CsvShaper
   #   csv.row @model, :name, :age, :location
   # 
   class Row < BlankSlate
-    
     attr_accessor :model, :cells
     
     def initialize(*args)

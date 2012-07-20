@@ -24,7 +24,6 @@ module CsvShaper
 
       # csv.headers do |head|
       if block_given?
-        puts "block was given!"
         yield self
       elsif args.any?
         # csv.headers User

@@ -4,6 +4,7 @@ module CsvShaper
     
     def initialize
       @rows = []
+      yield self if block_given?
     end
     
     # Public: creates a new instance of Shaper taps it with
@@ -18,7 +19,7 @@ module CsvShaper
     #
     # Returns a String
     def self.encode
-      new.tap { |shaper| yield shaper } # .encode!
+      new.tap { |shaper| yield shaper }.to_csv
     end
     
     # Public: creates a header row for the CSV
@@ -48,20 +49,20 @@ module CsvShaper
       unless collection.respond_to?(:each)
         raise ArgumentError, 'csv.rows only accepts Enumerable object (that respond to #each). Use csv.row for a single object.'
       end
-      
+
       collection.each do |element|
         row(element, &block)
       end
-      
+
       @rows
     end
-    
+
     # Public: converts the Header and Row objects into a string
     # of valid CSV data. Delegated to the Encoder class
     #
     # Returns a String
-    def encode!
-      Encoder.new(@header, @rows)
+    def to_csv
+      Encoder.new(@header, @rows).to_csv
     end
   end
 end
