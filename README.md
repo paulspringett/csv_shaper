@@ -1,29 +1,32 @@
-# CsvShaper
+# CSV Shaper
 
-TODO: Write a gem description
+Beautiful DSL for creating CSV output in Ruby.
 
-## Installation
+### Example Usage
 
-Add this line to your application's Gemfile:
+```ruby
+CsvShaper::Shaper.encode do |csv|
+  
+  csv.header :name, :age, :gender, :pet_names
+  
+  csv.rows @users do |csv, user|
+    csv.cells :name, :age, :gender
+    
+    if user.pets.any?
+      csv.cell :pet_names
+    end
+  end
+end
+```
 
-    gem 'csv_shaper'
+### Install
 
-And then execute:
+Install using Rubygems
 
-    $ bundle
+    $ gem install csv-shaper
 
-Or install it yourself as:
+Or if you want to use it in your Rails app, add the following line to your Gemfile
 
-    $ gem install csv_shaper
+    gem 'csv-shaper'
 
-## Usage
-
-TODO: Write usage instructions here
-
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+Copyright (c) Paul Springett 2012
