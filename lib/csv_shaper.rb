@@ -9,7 +9,5 @@ require './lib/csv_shaper/encoder'
 require './lib/csv_shaper/shaper'
 
 module CsvShaper
-  
   class MissingHeadersError < StandardError; end
-  
 end
