@@ -1,5 +1,7 @@
 module CsvShaper
   class Shaper < BlankSlate
+    attr_reader :header, :rows
+    
     def initialize
       @rows = []
     end
@@ -16,7 +18,7 @@ module CsvShaper
     #
     # Returns a String
     def self.encode
-      new.tap { |shaper| yield shaper }.encode!
+      new.tap { |shaper| yield shaper } # .encode!
     end
     
     # Public: creates a header row for the CSV
@@ -25,7 +27,7 @@ module CsvShaper
     #
     # Returns a Header instance
     def headers(*args, &block)
-      @head = Header.new(*args, &block)
+      @header = Header.new(*args, &block)
     end
     
     # Public: adds a row to the CSV
@@ -59,7 +61,7 @@ module CsvShaper
     #
     # Returns a String
     def encode!
-      Encoder.new(@head, @rows)
+      Encoder.new(@header, @rows)
     end
   end
 end
