@@ -11,7 +11,9 @@ module CsvShaper
     # with the given block and encodes it to a String of CSV data
     # Example:
     #   data = CsvShaper::Shaper.encode do |csv|
-    #     csv.rows
+    #     csv.rows @users do |csv, user|
+    #       csv.cells :name, :age, :gender
+    #     end
     #   end
     #
     #  puts data
