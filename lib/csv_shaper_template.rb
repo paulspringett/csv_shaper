@@ -22,6 +22,4 @@ class CsvShaperHandler
   end
 end
 
-if defined?(Rails)
-  ActionView::Template.register_template_handler :shaper, CsvShaperHandler
-end
+ActionView::Template.register_template_handler :shaper, CsvShaperHandler
