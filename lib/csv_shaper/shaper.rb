@@ -45,7 +45,9 @@ module CsvShaper
     #   collection - an Enumerable of objects to be passed to #row
     #
     # Returns an updated Array of Row objects
-    def rows(collection, &block)
+    def rows(collection = nil, &block)
+      return @rows if collection.nil?
+      
       unless collection.respond_to?(:each)
         raise ArgumentError, 'csv.rows only accepts Enumerable object (that respond to #each). Use csv.row for a single object.'
       end

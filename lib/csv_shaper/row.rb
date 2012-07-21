@@ -19,25 +19,26 @@ module CsvShaper
   #   csv.row @model, :name, :age, :location
   # 
   class Row < BlankSlate
-    attr_accessor :model, :cells
+    attr_reader :model, :cells
     
     def initialize(*args)
       @cells = ActiveSupport::OrderedHash.new
-      
-      case
+
       # csv.row @user do |csv, user|
-      when args.one? && block_given?
+      if args.one? && block_given?
         @model = args.first
         yield self, @model
       
       # csv.row do |csv|
-      when args.empty? && block_given?
+      elsif args.empty? && block_given?
         yield self
       
       # csv.row @user, :name, :age, :location
-      when args.many?
-        @model = args.pop
+      elsif args.length > 1
+        @model = args.shift
         args.each { |col| cell(col) }
+      else
+        raise ArgumentError, 'invalid args passed to csv.row'
       end        
     end
     
