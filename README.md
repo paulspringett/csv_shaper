@@ -30,3 +30,27 @@ Or if you want to use it in your Rails app, add the following line to your Gemfi
     gem 'csv-shaper'
 
 Copyright (c) Paul Springett 2012
+
+
+
+
+
+
+TODO:
+
+* Rails integration testing
+* Publish to RubyGems.org
+* Travis CI setup
+* Full README with examples
+* Peer-review?
+
+
+
+
+
+
+
+
+
+
+

@@ -4,8 +4,15 @@ require File.expand_path('../lib/csv_shaper/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Paul Springett"]
   gem.email         = ["paul@springett.me"]
-  gem.description   = %q{CSV template builder}
-  gem.summary       = %q{Creates a CSV file from objects, with Rails support}
+
+  gem.summary       = %q{Beautiful DSL for creating CSV output in Ruby & Rails}
+  gem.description   = %q{
+    Creating CSV files in Ruby is painful! CSV Shaper makes life easier! It's
+    ideal for converting database backed models with attrbiutes into CSV output.
+    It can be used without Rails, but works great with ActiveRecord models and even
+    comes with support for it's own template handling.
+  }
+
   gem.homepage      = "http://github.com/paulspringett/csv_shaper"
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
@@ -17,5 +24,4 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'activesupport', '>= 3.0.0'
   gem.add_development_dependency 'rspec'
-
 end
