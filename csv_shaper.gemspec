@@ -23,5 +23,7 @@ Gem::Specification.new do |gem|
   gem.version       = CsvShaper::VERSION
 
   gem.add_dependency 'activesupport', '>= 3.0.0'
+  gem.add_dependency 'blankslate', '>= 2.1.2.4'
+  
   gem.add_development_dependency 'rspec'
 end
