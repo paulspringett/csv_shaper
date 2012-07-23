@@ -52,11 +52,15 @@ csv_string = CsvShaper::Shaper.encode do |csv|
 end
 ```
 
-If you're using it in Rails 3.0+ you are already inside the block so you can just call the `csv` object.
+### Usage in Rails 3.0+
+
+If you're using it in Rails 3.0+ you are already inside the `encode` block so you can just call the `csv` object directly.
 
 Create a Rails view, set the content-type to `csv` and the handler to `shaper`, like so
 
     index.csv.shaper
+    
+then just start defining your headers and rows as per the examples.
 
 ### Headers
 
