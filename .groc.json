@@ -1,0 +1,4 @@
+{
+  "glob": ["lib/*.rb", "lib/csv_shaper/*.rb", "README.md"],
+  "github": true
+}
