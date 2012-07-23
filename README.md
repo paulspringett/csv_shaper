@@ -6,6 +6,8 @@ Creating CSV files in Ruby is painful! CSV Shaper makes life easier! It's ideal 
 
 [![Build Status](https://secure.travis-ci.org/paulspringett/csv_shaper.png?branch=master)](http://travis-ci.org/paulspringett/csv_shaper)
 
+Annotated source: http://paulspringett.github.com/csv_shaper/
+
 ### Example Usage
 
 ```ruby
