@@ -1,20 +1,20 @@
 module CsvShaper
-  
   # Header
   # Handles creating and mapping of the headers
   # Examples:
-  #   # assign the headers from the attributes of a class
-  #   csv.headers User
+  # ``` 
+  # # assign the headers from the attributes of a class
+  # csv.headers User
   # 
-  #   # assigns headers normally
-  #   csv.headers :name, :age, :location
+  # # assigns headers normally
+  # csv.headers :name, :age, :location
   # 
-  #   # pass a block
-  #   csv.headers do |csv|
-  #     csv.columns :name, :age, :location
-  #     csv.mappings name: 'Full name, location: 'Region'
-  #   end
-  #
+  # # pass a block
+  # csv.headers do |csv|
+  #   csv.columns :name, :age, :location
+  #   csv.mappings name: 'Full name, location: 'Region'
+  # end
+  # ```
   class Header
     attr_reader :klass, :mappings, :mapped_columns
 
@@ -22,14 +22,11 @@ module CsvShaper
       @mappings = {}
       @columns = []
 
-      # csv.headers do |head|
       if block_given?
         yield self
       elsif args.any?
-        # csv.headers User
         if (@klass = args.first.respond_to?(:attribute_names) && args.first)
           columns(*@klass.attribute_names)
-        # csv.headers :name, :age, :location
         else
           columns(*args)
         end
@@ -40,9 +37,10 @@ module CsvShaper
     # of Symbol column names. Union join the existing column
     # names with those passed
     # Example:
-    #   header.columns :name, :age, :location
-    #
-    #   args - Array of Symbol arguments passed
+    # ```
+    # header.columns :name, :age, :location
+    # ```
+    # `args` - Array of Symbol arguments passed
     #
     # Returns as Array of Symbols
     def columns(*args)
@@ -52,9 +50,10 @@ module CsvShaper
     # Public: Define mappings of the Symbol column names
     # to nicer, human names
     # Example:
-    #   header.mappings name: 'Full name', age: 'Age of person'
-    #
-    #   hash - Hash of mappings where the key is the column name to map
+    # ```
+    # header.mappings name: 'Full name', age: 'Age of person'
+    # ```
+    # `hash` - Hash of mappings where the key is the column name to map
     #          and the value is the human readable value
     #
     # Returns a Hash of mappings

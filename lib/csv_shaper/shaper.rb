@@ -1,4 +1,6 @@
 module CsvShaper
+  # Shaper
+  # Core CsvShaper class. Delegates header and row generating.
   class Shaper
     attr_reader :header, :rows
     
@@ -10,14 +12,16 @@ module CsvShaper
     # Public: creates a new instance of Shaper taps it with
     # with the given block and encodes it to a String of CSV data
     # Example:
-    #   data = CsvShaper::Shaper.encode do |csv|
-    #     csv.rows @users do |csv, user|
-    #       csv.cells :name, :age, :gender
-    #     end
+    # ```
+    # data = CsvShaper::Shaper.encode do |csv|
+    #   csv.rows @users do |csv, user|
+    #     csv.cells :name, :age, :gender
     #   end
+    # end
     #
-    #  puts data
-    #  => "Name,Age,Gender\n'Joe Bloggs',25,'M'\n'John Smith',34,'M'" 
+    # puts data
+    # => "Name,Age,Gender\n'Joe Bloggs',25,'M'\n'John Smith',34,'M'" 
+    # ```
     #
     # Returns a String
     def self.encode
@@ -44,7 +48,7 @@ module CsvShaper
     
     # Public: adds several rows to the CSV
     #
-    #   collection - an Enumerable of objects to be passed to #row
+    # `collection` - an Enumerable of objects to be passed to #row
     #
     # Returns an updated Array of Row objects
     def rows(collection = nil, &block)

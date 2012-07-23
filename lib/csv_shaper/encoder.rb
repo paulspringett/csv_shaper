@@ -1,6 +1,12 @@
 require 'csv'
 
 module CsvShaper
+  # Encoder
+  # Takes a Header and Array of Rows and converts them to a valid CSV formatted String
+  # Example:
+  # ```
+  # CsvShaper::Encoder.new(@header, @rows).to_csv
+  # ```
   class Encoder
     def initialize(header, rows = [])
       if header.nil?
@@ -26,7 +32,7 @@ module CsvShaper
     
     private
     
-    # Internal: make use of CSV#values_at to pad out the
+    # Internal: make use of `CSV#values_at` to pad out the
     # cells into the correct columns for the headers
     #
     # Returns an Array of Arrays

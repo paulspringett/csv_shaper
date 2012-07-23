@@ -1,4 +1,8 @@
+# CsvShaperTemplate
+# Rails view template class
 class CsvShaperTemplate < CsvShaper::Shaper
+  # Expected `encode` call
+  # Instantiates a new CsvShaperTemplate object and calls `to_csv` on it
   def self.encode(context)
     new(context).tap { |shaper| yield shaper }.to_csv
   end
@@ -9,10 +13,15 @@ class CsvShaperTemplate < CsvShaper::Shaper
   end
 end
 
+# CsvShaperHandler
+# Template handler for Rails
 class CsvShaperHandler
   cattr_accessor :default_format
   self.default_format = Mime::CSV
 
+  # Expected `call` class method
+  # Set response headers with filename
+  # Primarily calls CsvShaperTemplate.encode, passing through the context (self)
   def self.call(template)
     %{
       unless defined?(ActionMailer) && defined?(ActionMailer::Base) && controller.is_a?(ActionMailer::Base)
