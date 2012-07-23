@@ -1,7 +1,7 @@
 require 'csv'
 
 module CsvShaper
-  class Encoder < BlankSlate
+  class Encoder
     def initialize(header, rows = [])
       if header.nil?
         raise MissingHeadersError, 'you must define some headers using csv.headers ...'

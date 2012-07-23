@@ -1,5 +1,5 @@
 module CsvShaper
-  class Shaper < BlankSlate
+  class Shaper
     attr_reader :header, :rows
     
     def initialize

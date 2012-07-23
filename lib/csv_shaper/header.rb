@@ -15,7 +15,7 @@ module CsvShaper
   #     csv.mappings name: 'Full name, location: 'Region'
   #   end
   #
-  class Header < BlankSlate
+  class Header
     attr_reader :klass, :mappings, :mapped_columns
 
     def initialize(*args)

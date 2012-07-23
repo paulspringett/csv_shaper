@@ -17,8 +17,8 @@ module CsvShaper
   #   # create a row with prefilled cells from a model
   #   # note no block is passed
   #   csv.row @model, :name, :age, :location
-  # 
-  class Row < BlankSlate
+  #
+  class Row
     attr_reader :model, :cells
     
     def initialize(*args)
