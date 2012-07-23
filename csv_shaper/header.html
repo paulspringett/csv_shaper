@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><title>csv_shaper/header</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="csv_shaper/header"><meta name="groc-project-path" content="lib/csv_shaper/header.rb"><meta name="groc-github-url" content="https://github.com/paulspringett/paulspringett"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/paulspringett/paulspringett/blob/master/lib/csv_shaper/header.rb">lib/csv_shaper/header.rb</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="k">module</span> <span class="nn">CsvShaper</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Header
+Handles creating and mapping of the headers
+Examples:</p>
+
+<pre><code class=" "># assign the headers from the attributes of a class
+csv.headers User
+
+# assigns headers normally
+csv.headers :name, :age, :location
+
+# pass a block
+csv.headers do |csv|
+  csv.columns :name, :age, :location
+  csv.mappings name: 'Full name, location: 'Region'
+end
+</code></pre></div></div><div class="code"><div class="wrapper">  <span class="k">class</span> <span class="nc">Header</span>
+    <span class="kp">attr_reader</span> <span class="ss">:klass</span><span class="p">,</span> <span class="ss">:mappings</span><span class="p">,</span> <span class="ss">:mapped_columns</span>
+
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+      <span class="vi">@mappings</span> <span class="o">=</span> <span class="p">{}</span>
+      <span class="vi">@columns</span> <span class="o">=</span> <span class="o">[]</span>
+
+      <span class="k">if</span> <span class="nb">block_given?</span>
+        <span class="k">yield</span> <span class="nb">self</span>
+      <span class="k">elsif</span> <span class="n">args</span><span class="o">.</span><span class="n">any?</span>
+        <span class="k">if</span> <span class="p">(</span><span class="vi">@klass</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:attribute_names</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">args</span><span class="o">.</span><span class="n">first</span><span class="p">)</span>
+          <span class="n">columns</span><span class="p">(</span><span class="o">*</span><span class="vi">@klass</span><span class="o">.</span><span class="n">attribute_names</span><span class="p">)</span>
+        <span class="k">else</span>
+          <span class="n">columns</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+    </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Public: serves as the getter and setter for the Array
+of Symbol column names. Union join the existing column
+names with those passed
+Example:</p>
+
+<pre><code>header.columns :name, :age, :location
+</code></pre>
+
+<p><code>args</code> - Array of Symbol arguments passed</p>
+
+<p>Returns as Array of Symbols</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">columns</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+      <span class="vi">@columns</span> <span class="o">=</span> <span class="vi">@columns</span> <span class="o">|</span> <span class="n">args</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:to_sym</span><span class="p">)</span>
+    <span class="k">end</span>
+    </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Public: Define mappings of the Symbol column names
+to nicer, human names
+Example:</p>
+
+<pre><code>header.mappings name: 'Full name', age: 'Age of person'
+</code></pre>
+
+<p><code>hash</code> - Hash of mappings where the key is the column name to map
+         and the value is the human readable value</p>
+
+<p>Returns a Hash of mappings</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">mappings</span><span class="p">(</span><span class="nb">hash</span> <span class="o">=</span> <span class="p">{})</span> 
+      <span class="vi">@mappings</span><span class="o">.</span><span class="n">merge!</span><span class="p">(</span><span class="nb">hash</span><span class="p">)</span>
+    <span class="k">end</span>
+    </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Public: converts columns and mappings into mapped columns
+ready for encoding. If a mapped value is found that is used,
+else the Symbol column name is humanized</p>
+
+<p>Returns an Array of Strings</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">mapped_columns</span>
+      <span class="vi">@columns</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">column</span><span class="o">|</span>
+        <span class="vi">@mappings</span><span class="o">[</span><span class="n">column</span><span class="o">]</span> <span class="o">||</span> <span class="n">column</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">humanize</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></div></div></div></div></body></html>

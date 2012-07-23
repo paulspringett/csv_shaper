@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="en"><head><title>csv_shaper/shaper</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="csv_shaper/shaper"><meta name="groc-project-path" content="lib/csv_shaper/shaper.rb"><meta name="groc-github-url" content="https://github.com/paulspringett/paulspringett"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/paulspringett/paulspringett/blob/master/lib/csv_shaper/shaper.rb">lib/csv_shaper/shaper.rb</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="k">module</span> <span class="nn">CsvShaper</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Shaper
+Core CsvShaper class. Delegates header and row generating.</p></div></div><div class="code"><div class="wrapper">  <span class="k">class</span> <span class="nc">Shaper</span>
+    <span class="kp">attr_reader</span> <span class="ss">:header</span><span class="p">,</span> <span class="ss">:rows</span>
+    
+    <span class="k">def</span> <span class="nf">initialize</span>
+      <span class="vi">@rows</span> <span class="o">=</span> <span class="o">[]</span>
+      <span class="k">yield</span> <span class="nb">self</span> <span class="k">if</span> <span class="nb">block_given?</span>
+    <span class="k">end</span>
+    </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Public: creates a new instance of Shaper taps it with
+with the given block and encodes it to a String of CSV data
+Example:</p>
+
+<pre><code>data = CsvShaper::Shaper.encode do |csv|
+  csv.rows @users do |csv, user|
+    csv.cells :name, :age, :gender
+  end
+end
+
+puts data
+=&gt; "Name,Age,Gender\n'Joe Bloggs',25,'M'\n'John Smith',34,'M'" 
+</code></pre>
+
+<p>Returns a String</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">encode</span>
+      <span class="kp">new</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">shaper</span><span class="o">|</span> <span class="k">yield</span> <span class="n">shaper</span> <span class="p">}</span><span class="o">.</span><span class="n">to_csv</span>
+    <span class="k">end</span>
+    </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Public: creates a header row for the CSV
+This is delegated to the Header class
+see header.rb for usage examples</p>
+
+<p>Returns a Header instance</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">headers</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+      <span class="vi">@header</span> <span class="o">=</span> <span class="no">Header</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="k">end</span>
+    </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Public: adds a row to the CSV
+This is delegated to the Row class
+See row.rb for usage examples</p>
+
+<p>Returns an updated Array of Row objects</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">row</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+      <span class="vi">@rows</span><span class="o">.</span><span class="n">push</span> <span class="no">Row</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="k">end</span>
+    </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Public: adds several rows to the CSV</p>
+
+<p><code>collection</code> - an Enumerable of objects to be passed to #row</p>
+
+<p>Returns an updated Array of Row objects</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">rows</span><span class="p">(</span><span class="n">collection</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+      <span class="k">return</span> <span class="vi">@rows</span> <span class="k">if</span> <span class="n">collection</span><span class="o">.</span><span class="n">nil?</span>
+      
+      <span class="k">unless</span> <span class="n">collection</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="ss">:each</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="no">ArgumentError</span><span class="p">,</span> <span class="s1">&#39;csv.rows only accepts Enumerable object (that respond to #each). Use csv.row for a single object.&#39;</span>
+      <span class="k">end</span>
+
+      <span class="n">collection</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">element</span><span class="o">|</span>
+        <span class="n">row</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+      <span class="k">end</span>
+
+      <span class="vi">@rows</span>
+    <span class="k">end</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Public: converts the Header and Row objects into a string
+of valid CSV data. Delegated to the Encoder class</p>
+
+<p>Returns a String</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">to_csv</span>
+      <span class="no">Encoder</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="vi">@header</span><span class="p">,</span> <span class="vi">@rows</span><span class="p">)</span><span class="o">.</span><span class="n">to_csv</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></div></div></div></div></body></html>

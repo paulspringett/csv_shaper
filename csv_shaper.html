@@ -1,0 +1,14 @@
+<!DOCTYPE html><html lang="en"><head><title>csv_shaper</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="csv_shaper"><meta name="groc-project-path" content="lib/csv_shaper.rb"><meta name="groc-github-url" content="https://github.com/paulspringett/paulspringett"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/paulspringett/paulspringett/blob/master/lib/csv_shaper.rb">lib/csv_shaper.rb</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="nb">require</span> <span class="s1">&#39;active_support/ordered_hash&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;active_support/inflector&#39;</span>
+
+<span class="nb">require</span> <span class="s1">&#39;csv_shaper/version&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;csv_shaper/header&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;csv_shaper/row&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;csv_shaper/encoder&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;csv_shaper/shaper&#39;</span>
+
+<span class="k">module</span> <span class="nn">CsvShaper</span>
+  <span class="k">class</span> <span class="nc">MissingHeadersError</span> <span class="o">&lt;</span> <span class="no">StandardError</span><span class="p">;</span> <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="nb">require</span> <span class="s2">&quot;csv_shaper_template&quot;</span> <span class="k">if</span> <span class="n">defined?</span><span class="p">(</span><span class="no">ActionView</span><span class="o">::</span><span class="no">Template</span><span class="p">)</span></div></div></div></div></body></html>

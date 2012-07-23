@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="en"><head><title>csv_shaper/row</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="csv_shaper/row"><meta name="groc-project-path" content="lib/csv_shaper/row.rb"><meta name="groc-github-url" content="https://github.com/paulspringett/paulspringett"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/paulspringett/paulspringett/blob/master/lib/csv_shaper/row.rb">lib/csv_shaper/row.rb</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="k">module</span> <span class="nn">CsvShaper</span>
+  </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Row
+Handles creating of cells within a row and
+assigning of the model's values to cells
+Examples:</p>
+
+<pre><code># pass a model to the row
+csv.row @model do |csv, model|
+  ...
+end
+
+# create an empty row instance
+csv.row do |csv|
+  ...
+end
+
+# create a row with prefilled cells from a model
+# note no block is passed
+csv.row @model, :name, :age, :location
+</code></pre></div></div><div class="code"><div class="wrapper">  <span class="k">class</span> <span class="nc">Row</span>
+    <span class="kp">attr_reader</span> <span class="ss">:model</span><span class="p">,</span> <span class="ss">:cells</span>
+    
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+      <span class="vi">@cells</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">OrderedHash</span><span class="o">.</span><span class="n">new</span>
+
+      <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">one?</span> <span class="o">&amp;&amp;</span> <span class="nb">block_given?</span>
+        <span class="vi">@model</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">first</span>
+        <span class="k">yield</span> <span class="nb">self</span><span class="p">,</span> <span class="vi">@model</span>
+      <span class="k">elsif</span> <span class="n">args</span><span class="o">.</span><span class="n">empty?</span> <span class="o">&amp;&amp;</span> <span class="nb">block_given?</span>
+        <span class="k">yield</span> <span class="nb">self</span>
+      <span class="k">elsif</span> <span class="n">args</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">1</span>
+        <span class="vi">@model</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">shift</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">col</span><span class="o">|</span> <span class="n">cell</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="p">}</span>
+      <span class="k">else</span>
+        <span class="k">raise</span> <span class="no">ArgumentError</span><span class="p">,</span> <span class="s1">&#39;invalid args passed to csv.row&#39;</span>
+      <span class="k">end</span>        
+    <span class="k">end</span>
+    </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Public: assign the given Array of args to cells in this Row</p>
+
+<p><code>args</code> - Array of the arguments passed (expected to be Symbols)</p>
+
+<p>Returns an Array of the Cells in this row</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">cells</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+      <span class="n">args</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">col</span><span class="o">|</span> <span class="n">cell</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="p">}</span>
+      <span class="vi">@cells</span>
+    <span class="k">end</span>
+    </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Public: add a cell to this Row
+If the Row has a @model defined passing just a Symbol will
+call that method on the @model and assign it to a column of
+the same name. Otherwise a value will need to be passed also</p>
+
+<p><code>column</code> - Symbol of the column to add to value to
+<code>value</code> - data to assign to the cell (default: nil)</p>
+
+<p>Returns an Array of the Row's cells</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">cell</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>
+      <span class="n">column</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">to_sym</span>
+      
+      <span class="k">if</span> <span class="vi">@model</span> <span class="o">&amp;&amp;</span> <span class="n">value</span><span class="o">.</span><span class="n">nil?</span>
+        <span class="vi">@cells</span><span class="o">[</span><span class="n">column</span><span class="o">]</span> <span class="o">=</span> <span class="vi">@model</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+      <span class="k">else</span>
+        <span class="vi">@cells</span><span class="o">[</span><span class="n">column</span><span class="o">]</span> <span class="o">=</span> <span class="n">value</span>
+      <span class="k">end</span>
+      
+      <span class="vi">@cells</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></div></div></div></div></body></html>

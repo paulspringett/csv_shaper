@@ -1,0 +1,29 @@
+<!DOCTYPE html><html lang="en"><head><title>csv_shaper_template</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="csv_shaper_template"><meta name="groc-project-path" content="lib/csv_shaper_template.rb"><meta name="groc-github-url" content="https://github.com/paulspringett/paulspringett"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/paulspringett/paulspringett/blob/master/lib/csv_shaper_template.rb">lib/csv_shaper_template.rb</a></div></div><div id="document"><div class="segment"><div class="comments"><div class="wrapper"><p>CsvShaperTemplate
+Rails view template class</p></div></div><div class="code"><div class="wrapper"><span class="k">class</span> <span class="nc">CsvShaperTemplate</span> <span class="o">&lt;</span> <span class="no">CsvShaper</span><span class="o">::</span><span class="no">Shaper</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Expected <code>encode</code> call
+Instantiates a new CsvShaperTemplate object and calls <code>to_csv</code> on it</p></div></div><div class="code"><div class="wrapper">  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">encode</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="kp">new</span><span class="p">(</span><span class="n">context</span><span class="p">)</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">shaper</span><span class="o">|</span> <span class="k">yield</span> <span class="n">shaper</span> <span class="p">}</span><span class="o">.</span><span class="n">to_csv</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="vi">@context</span> <span class="o">=</span> <span class="n">context</span>
+    <span class="k">super</span><span class="p">()</span>
+  <span class="k">end</span>
+<span class="k">end</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>CsvShaperHandler
+Template handler for Rails</p></div></div><div class="code"><div class="wrapper"><span class="k">class</span> <span class="nc">CsvShaperHandler</span>
+  <span class="n">cattr_accessor</span> <span class="ss">:default_format</span>
+  <span class="nb">self</span><span class="o">.</span><span class="n">default_format</span> <span class="o">=</span> <span class="no">Mime</span><span class="o">::</span><span class="no">CSV</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Expected <code>call</code> class method
+Set response headers with filename
+Primarily calls CsvShaperTemplate.encode, passing through the context (self)</p></div></div><div class="code"><div class="wrapper">  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+    <span class="sx">%{</span>
+<span class="sx">      unless defined?(ActionMailer) &amp;&amp; defined?(ActionMailer::Base) &amp;&amp; controller.is_a?(ActionMailer::Base)</span>
+<span class="sx">        @filename ||= &quot;</span><span class="se">\#</span><span class="sx">{controller.action_name}.csv&quot;</span>
+<span class="sx">        controller.response.headers[&quot;Content-Type&quot;] ||= &#39;text/csv&#39;</span>
+<span class="sx">        controller.response.headers[&#39;Content-Disposition&#39;] = &quot;attachment; filename=&#39;</span><span class="se">\#</span><span class="sx">{@filename}&#39;&quot;</span>
+<span class="sx">      end</span>
+
+<span class="sx">      CsvShaperTemplate.encode(self) do |csv|</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>{template.source}</p></div></div><div class="code"><div class="wrapper"><span class="sx">      end</span>
+<span class="sx">    }</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">ActionView</span><span class="o">::</span><span class="no">Template</span><span class="o">.</span><span class="n">register_template_handler</span> <span class="ss">:shaper</span><span class="p">,</span> <span class="no">CsvShaperHandler</span></div></div></div></div></body></html>
