@@ -143,10 +143,12 @@ csv.row @user, do |csv, user|
 end
 ```
 
-Any calls here to `cell` without a second argument are called on the model (`user`), otherwise the second parameter is used as a static value. The output from the above Ruby might look like:
+Any calls here to `cell` without a second argument are called on the model (`user`), otherwise the second parameter is used as a static value.
 
 The `cells` method only takes a list of Symbols that are called as methods on the model (`user`).
 
+The output from the above Ruby might look like:
+ 
 ```
 Paul,27,Male,2012-07-25
 ```
