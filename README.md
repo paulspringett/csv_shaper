@@ -153,21 +153,22 @@ csv.headers :name, :age, :gender
 
 csv.row do |csv|
   csv.cell :name, 'Paul'
+  # no age cell
   csv.cell :gender, 'M'
 end
 
 csv.row do |csv|
   csv.cell :name 'Joe'
   csv.cell :age, 34
+  # no gender cell
 end
 ```
 
-```csv
+```
 Name,Age,Gender
 Paul,,M
 Joe,34,
 ```
-
 
 ### Further Rails integration
 
