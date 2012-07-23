@@ -103,6 +103,8 @@ This would create headers like so:
 Full name,Age,Region
 ```
 
+The mappings are useful for pretty-ing up the names when creating the CSV. When creating cells below you should still use the column names, not the mapping names. eg. `:name` not `'Full name'`
+
 ### Rows & Cells
 
 CSV Shaper allows you to define rows and cells in a variety of ways.
@@ -122,7 +124,11 @@ end
 csv.row @user, :name, :age, :location
 ```
 
-This will call the column names (name, age...) on @user and assign them to the correct cells.
+This will call the column names (name, age...) on @user and assign them to the correct cells. The output from the above Ruby might look like:
+
+```
+Paul,27,United Kingdom
+```
 
 #### Passing a model to a block
 
@@ -133,11 +139,15 @@ csv.row @user, do |csv, user|
     csv.cell :gender
   end
 
-  csv.cell :exported_at, Time.now
+  csv.cell :exported_at, Date.today.to_formatted_s(:db)
 end
 ```
 
-Any calls here to `cell` or `cells` without a value are called on the model (`user`), otherwise the second parameter is assigned.
+Any calls here to `cell` or `cells` without a second argument are called on the model (`user`), otherwise the second parameter is used as a static value. The output from the above Ruby might look like:
+
+```
+Paul,27,Male,2012-07-25
+```
 
 ### Multiple Rows
 
