@@ -124,7 +124,7 @@ end
 csv.row @user, :name, :age, :location
 ```
 
-This will call the column names (name, age...) on @user and assign them to the correct cells. The output from the above Ruby might look like:
+This will call the column names (name, age...) on `@user` and assign them to the correct cells. The output from the above Ruby might look like:
 
 ```
 Paul,27,United Kingdom
@@ -143,7 +143,9 @@ csv.row @user, do |csv, user|
 end
 ```
 
-Any calls here to `cell` or `cells` without a second argument are called on the model (`user`), otherwise the second parameter is used as a static value. The output from the above Ruby might look like:
+Any calls here to `cell` without a second argument are called on the model (`user`), otherwise the second parameter is used as a static value. The output from the above Ruby might look like:
+
+The `cells` method only takes a list of Symbols that are called as methods on the model (`user`).
 
 ```
 Paul,27,Male,2012-07-25
