@@ -142,6 +142,33 @@ csv.rows @users do |csv, user|
 end
 ```
 
+### Don't worry about missing cells
+
+There's no need to pad missing cells with `nil`
+
+This Ruby code will produce the CSV output below
+
+```ruby
+csv.headers :name, :age, :gender
+
+csv.row do |csv|
+  csv.cell :name, 'Paul'
+  csv.cell :gender, 'M'
+end
+
+csv.row do |csv|
+  csv.cell :name 'Joe'
+  csv.cell :age, 34
+end
+```
+
+```csv
+Name,Age,Gender
+Paul,,M
+Joe,34,
+```
+
+
 ### Further Rails integration
 
 Customise the filename of the CSV download by defining a `@filename` instance variable in your controller action.
@@ -157,7 +184,7 @@ end
 
 ##### Hat tips
 
-[Jbuilder](https://github.com/rails/jbuilder/) for inspiration for the DSL
-[CSV Builder](https://github.com/econsultancy/csv_builder) for headers and custom filenames
+* [Jbuilder](https://github.com/rails/jbuilder/) for inspiration for the DSL
+* [CSV Builder](https://github.com/econsultancy/csv_builder) for headers and custom filenames
 
 Copyright (c) Paul Springett 2012
