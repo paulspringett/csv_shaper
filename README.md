@@ -142,4 +142,22 @@ csv.rows @users do |csv, user|
 end
 ```
 
+### Further Rails integration
+
+Customise the filename of the CSV download by defining a `@filename` instance variable in your controller action.
+
+```ruby
+respond_to :html, :csv
+
+def index
+  @users = User.all
+  @filename = "All users - #{Date.today.to_formatted_s(:db)}.csv"
+end
+```
+
+##### Hat tips
+
+[Jbuilder](https://github.com/rails/jbuilder/) for inspiration for the DSL
+[CSV Builder](https://github.com/econsultancy/csv_builder) for headers and custom filenames
+
 Copyright (c) Paul Springett 2012
