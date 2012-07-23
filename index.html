@@ -1,10 +1,12 @@
-<!DOCTYPE html><html lang="en"><head><title>CSV Shaper</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="index"><meta name="groc-project-path" content="README.md"><meta name="groc-github-url" content="https://github.com/paulspringett/csv_shaper"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/paulspringett/paulspringett/blob/master/README.md">README.md</a></div></div><div id="document"><div class="segment"><div class="comments"><div class="wrapper"><h1 id="csv-shaper">CSV Shaper</h1>
+<!DOCTYPE html><html lang="en"><head><title>index</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="index"><meta name="groc-project-path" content="README.md"><meta name="groc-github-url" content="https://github.com/paulspringett/paulspringett"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/paulspringett/paulspringett/blob/master/README.md">README.md</a></div></div><div id="document"><div class="segment"><div class="comments"><div class="wrapper"><h1 id="csv-shaper">CSV Shaper</h1>
 
 <p>Beautiful DSL for creating CSV output in Ruby &amp; Rails.</p>
 
 <p>Creating CSV files in Ruby is painful! CSV Shaper makes life easier! It's ideal for converting database backed models with attrbiutes into CSV output. It can be used without Rails, but works great with ActiveRecord models and even comes with support for it's own template handling.</p>
 
 <p><a href="http://travis-ci.org/paulspringett/csv_shaper"><img src="https://secure.travis-ci.org/paulspringett/csv_shaper.png?branch=master" alt="Build Status" title="" /></a></p>
+
+<p>Annotated source: http://paulspringett.github.com/csv_shaper/</p>
 
 <h3 id="example-usage">Example Usage</h3>
 
@@ -92,6 +94,8 @@ end
 <pre><code class="csv">Full name,Age,Region
 </code></pre>
 
+<p>The mappings are useful for pretty-ing up the names when creating the CSV. When creating cells below you should still use the column names, not the mapping names. eg. <code>:name</code> not <code>'Full name'</code></p>
+
 <h3 id="rows-amp-cells">Rows &amp; Cells</h3>
 
 <p>CSV Shaper allows you to define rows and cells in a variety of ways.</p>
@@ -109,7 +113,10 @@ end
 <pre><code class="ruby">csv.row @user, :name, :age, :location
 </code></pre>
 
-<p>This will call the column names (name, age...) on @user and assign them to the correct cells.</p>
+<p>This will call the column names (name, age...) on @user and assign them to the correct cells. The output from the above Ruby might look like:</p>
+
+<pre><code>Paul,27,United Kingdom
+</code></pre>
 
 <h4 id="passing-a-model-to-a-block">Passing a model to a block</h4>
 
@@ -119,11 +126,14 @@ end
     csv.cell :gender
   end
 
-  csv.cell :exported_at, Time.now
+  csv.cell :exported_at, Date.today.to_formatted_s(:db)
 end
 </code></pre>
 
-<p>Any calls here to <code>cell</code> or <code>cells</code> without a value are called on the model (<code>user</code>), otherwise the second parameter is assigned.</p>
+<p>Any calls here to <code>cell</code> or <code>cells</code> without a second argument are called on the model (<code>user</code>), otherwise the second parameter is used as a static value. The output from the above Ruby might look like:</p>
+
+<pre><code>Paul,27,Male,2012-07-25
+</code></pre>
 
 <h3 id="multiple-rows">Multiple Rows</h3>
 
