@@ -56,9 +56,23 @@ end
 
 ### Usage in Rails 3.0+
 
-If you're using it in Rails 3.0+ you are already inside the `encode` block so you can just call the `csv` object directly.
+When using it in Rails your view template is rendered inside the `encode` block so you can just call the `csv` object directly.
 
-Create a Rails view, set the content-type to `csv` and the handler to `shaper`, like so
+In Rails the example at the top of the README would simply be:
+
+```ruby
+csv.headers :name, :age, :gender, :pet_names
+
+csv.rows @users do |csv, user|
+  csv.cells :name, :age, :gender
+  
+  if user.pets.any?
+    csv.cell :pet_names
+  end
+end
+```
+
+Create a Rails view, set the content-type to `csv` and the handler to `shaper`. For the view of the `index` action the filename would be:
 
     index.csv.shaper
     
