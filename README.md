@@ -219,6 +219,15 @@ def index
 end
 ```
 
+### Contributing
+
+1. Fork it
+2. Create a semantically named feature branch
+3. Write your feature
+4. Add some tests for it
+5. Commit your changes & push to GitHub (do not change the gem's version number)
+6. Submit a pull request with relevant details
+
 ##### Hat tips
 
 * [Jbuilder](https://github.com/rails/jbuilder/) for inspiration for the DSL
