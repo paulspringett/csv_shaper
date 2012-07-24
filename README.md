@@ -12,7 +12,7 @@ Annotated source: http://paulspringett.github.com/csv_shaper/
 
 ```ruby
 csv_string = CsvShaper::Shaper.encode do |csv|
-  csv.header :name, :age, :gender, :pet_names
+  csv.headers :name, :age, :gender, :pet_names
   
   csv.rows @users do |csv, user|
     csv.cells :name, :age, :gender
