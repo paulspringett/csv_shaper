@@ -147,7 +147,7 @@ Paul,27,United Kingdom
 #### Passing a model to a block
 
 ```ruby
-csv.row @user, do |csv, user|
+csv.row @user do |csv, user|
   csv.cells :name, :age
   if user.show_gender?
     csv.cell :gender
