@@ -5,6 +5,7 @@ require 'csv_shaper/version'
 require 'csv_shaper/header'
 require 'csv_shaper/row'
 require 'csv_shaper/encoder'
+require 'csv_shaper/config'
 require 'csv_shaper/shaper'
 
 module CsvShaper
@@ -13,6 +14,10 @@ module CsvShaper
   # Shortcut the encode method
   def self.encode(&block)
     CsvShaper::Shaper.encode(&block)
+  end
+
+  def self.configure(&block)
+    CsvShaper::Shaper.configure(&block)
   end
 end
 

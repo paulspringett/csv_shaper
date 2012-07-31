@@ -27,11 +27,15 @@ module CsvShaper
       end
 
       table = CSV::Table.new(rows)
-      table.to_csv
+      table.to_csv(options)
     end
     
     private
-    
+
+    def options
+      CsvShaper::Shaper.config.try(:options) || {}
+    end
+
     # Internal: make use of `CSV#values_at` to pad out the
     # cells into the correct columns for the headers
     #
