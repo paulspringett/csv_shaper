@@ -205,6 +205,18 @@ def index
 end
 ```
 
+### CSV configuration
+
+To configure how the CSV output is formatted you can define a configure block, like so:
+
+```ruby
+CsvShaper.configure do |config|
+  config.col_sep = "\t"
+  config.write_headers = false
+end
+
+```
+
 ##### Hat tips
 
 * [Jbuilder](https://github.com/rails/jbuilder/) for inspiration for the DSL
