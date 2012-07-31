@@ -2,8 +2,11 @@ module CsvShaper
   # Shaper
   # Core CsvShaper class. Delegates header and row generating.
   class Shaper
-    cattr_accessor :config
     attr_reader :header, :rows
+    
+    class << self
+      attr_accessor :config
+    end
     
     def initialize
       @rows = []
@@ -77,7 +80,7 @@ module CsvShaper
     # Public: Create an instance of the config and cache it
     # for reference by the Encoder later
     def self.configure(&block)
-       self.config ||= CsvShaper::Config.new(&block)
+       @config ||= CsvShaper::Config.new(&block)
      end
   end
 end

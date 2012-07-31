@@ -33,7 +33,7 @@ module CsvShaper
     private
 
     def options
-      CsvShaper::Shaper.config.try(:options) || {}
+      CsvShaper::Shaper.config && CsvShaper::Shaper.config.options || {}
     end
 
     # Internal: make use of `CSV#values_at` to pad out the
