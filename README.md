@@ -2,7 +2,7 @@
 
 Beautiful DSL for creating CSV output in Ruby & Rails.
 
-Creating CSV files in Ruby is painful! CSV Shaper makes life easier! It's ideal for converting database backed models with attrbiutes into CSV output. It can be used without Rails, but works great with ActiveRecord models and even comes with support for it's own template handling.
+Creating CSV files in Ruby is painful! CSV Shaper makes life easier! It's ideal for converting database backed models with attributes into CSV output. It can be used without Rails, but works great with ActiveRecord models and even comes with support for its own template handling.
 
 [![Build Status](https://secure.travis-ci.org/paulspringett/csv_shaper.png?branch=master)](http://travis-ci.org/paulspringett/csv_shaper)
 
@@ -56,9 +56,23 @@ end
 
 ### Usage in Rails 3.0+
 
-If you're using it in Rails 3.0+ you are already inside the `encode` block so you can just call the `csv` object directly.
+When using it in Rails your view template is rendered inside the `encode` block so you can just call the `csv` object directly.
 
-Create a Rails view, set the content-type to `csv` and the handler to `shaper`, like so
+In Rails the example at the top of the README would simply be:
+
+```ruby
+csv.headers :name, :age, :gender, :pet_names
+
+csv.rows @users do |csv, user|
+  csv.cells :name, :age, :gender
+  
+  if user.pets.any?
+    csv.cell :pet_names
+  end
+end
+```
+
+Create a Rails view, set the content-type to `csv` and the handler to `shaper`. For the view of the `index` action the filename would be:
 
     index.csv.shaper
     
@@ -133,7 +147,7 @@ Paul,27,United Kingdom
 #### Passing a model to a block
 
 ```ruby
-csv.row @user, do |csv, user|
+csv.row @user do |csv, user|
   csv.cells :name, :age
   if user.show_gender?
     csv.cell :gender
@@ -216,6 +230,15 @@ CsvShaper.configure do |config|
 end
 
 ```
+
+### Contributing
+
+1. Fork it
+2. Create a semantically named feature branch
+3. Write your feature
+4. Add some tests for it
+5. Commit your changes & push to GitHub (do not change the gem's version number)
+6. Submit a pull request with relevant details
 
 ##### Hat tips
 
