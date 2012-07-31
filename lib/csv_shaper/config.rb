@@ -26,7 +26,7 @@ module CsvShaper
 
     def respond_to?(meth)
       meth = sanitize_setter_method(meth)
-      defaults.has_key?(meth)
+      defaults.key?(meth)
     end
 
     private
