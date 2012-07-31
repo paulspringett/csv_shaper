@@ -9,6 +9,11 @@ require 'csv_shaper/shaper'
 
 module CsvShaper
   class MissingHeadersError < StandardError; end
+
+  # Shortcut the encode method
+  def self.encode(&block)
+    CsvShaper::Shaper.encode(&block)
+  end
 end
 
 require "csv_shaper_template" if defined?(ActionView::Template)

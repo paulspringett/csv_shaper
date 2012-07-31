@@ -16,4 +16,13 @@ describe CsvShaper::Shaper do
     csv = CsvShaper::Shaper.new
     csv.should respond_to(:to_csv)
   end
+
+  it "should provide a shortcut to the encode method" do
+    CsvShaper.should respond_to(:encode)
+
+    CsvShaper.encode do |csv|
+      csv.headers :foo
+      csv.should be_instance_of(CsvShaper::Shaper)
+    end
+  end
 end
