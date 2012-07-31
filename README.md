@@ -231,6 +231,8 @@ end
 
 ```
 
+If you're using Rails you can put this in an initializer.
+
 ### Contributing
 
 1. Fork it
