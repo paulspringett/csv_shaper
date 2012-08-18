@@ -228,8 +228,10 @@ CsvShaper.configure do |config|
   config.col_sep = "\t"
   config.write_headers = false
 end
-
 ```
+
+Inside the block you can pass any of the standard library [CSV DEFAULT_OPTIONS](http://ruby-doc.org/stdlib-1.9.2/libdoc/csv/rdoc/CSV.html#DEFAULT_OPTIONS), as well as a `write_headers` option (default: `true`).
+Setting this to `false` will exclude the headers from the final CSV output.
 
 If you're using Rails you can put this in an initializer.
 
