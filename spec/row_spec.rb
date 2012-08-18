@@ -22,4 +22,24 @@ describe CsvShaper::Row do
       csv.should be_kind_of(CsvShaper::Row)
     }
   end
+  
+  describe "cells" do
+    it "should send parse an attribute of the model" do
+      row = CsvShaper::Row.new(user, :gender)
+      row.cell :name
+      row.cells.should eq({ name: 'Paul', gender: 'Male' })
+    end
+    
+    it "should send assign an unrelated value" do
+      row = CsvShaper::Row.new(user, :gender)
+      row.cell :foo, 'bar'
+      row.cells.should eq({ foo: 'bar', gender: 'Male' })
+    end
+    
+    it "ignore nil values passed" do
+      row = CsvShaper::Row.new(user, :gender)
+      row.cell :foo, nil
+      row.cells.should eq({ foo: nil, gender: 'Male' })
+    end
+  end
 end
