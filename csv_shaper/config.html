@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en"><head><title>csv_shaper/config</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="csv_shaper/config"><meta name="groc-project-path" content="lib/csv_shaper/config.rb"><meta name="groc-github-url" content="https://github.com/paulspringett/paulspringett"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/paulspringett/paulspringett/blob/master/lib/csv_shaper/config.rb">lib/csv_shaper/config.rb</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="nb">require</span> <span class="s1">&#39;csv&#39;</span>
+
+<span class="k">module</span> <span class="nn">CsvShaper</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Config
+Configure the standard CSV default options
+as well the option to output the header row</p></div></div><div class="code"><div class="wrapper">  <span class="k">class</span> <span class="nc">Config</span>
+    <span class="kp">attr_reader</span> <span class="ss">:options</span>
+
+    <span class="k">def</span> <span class="nf">initialize</span>
+      <span class="vi">@options</span> <span class="o">=</span> <span class="p">{}</span>
+      <span class="k">yield</span> <span class="nb">self</span> <span class="k">if</span> <span class="nb">block_given?</span>
+    <span class="k">end</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Public: set options where the method name
+matches a key</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">method_missing</span><span class="p">(</span><span class="n">meth</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+      <span class="n">meth</span> <span class="o">=</span> <span class="n">sanitize_setter_method</span><span class="p">(</span><span class="n">meth</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="n">defaults</span><span class="o">.</span><span class="n">key?</span><span class="p">(</span><span class="n">meth</span><span class="p">)</span>
+        <span class="vi">@options</span><span class="o">[</span><span class="n">meth</span><span class="o">]</span> <span class="o">=</span> <span class="n">value</span>
+      <span class="k">else</span>
+        <span class="k">super</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">respond_to?</span><span class="p">(</span><span class="n">meth</span><span class="p">)</span>
+      <span class="n">meth</span> <span class="o">=</span> <span class="n">sanitize_setter_method</span><span class="p">(</span><span class="n">meth</span><span class="p">)</span>
+      <span class="n">defaults</span><span class="o">.</span><span class="n">key?</span><span class="p">(</span><span class="n">meth</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="kp">private</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Internal: removes the equals from the end of the
+method name</p>
+
+<p><code>meth</code> - Symbol of the method of sanitize</p>
+
+<p>Returns a Symbol</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">sanitize_setter_method</span><span class="p">(</span><span class="n">meth</span><span class="p">)</span>
+      <span class="n">meth</span> <span class="o">=</span> <span class="n">meth</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+      <span class="n">meth</span><span class="o">.</span><span class="n">to_sym</span>
+    <span class="k">end</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Internal: default CSV options, plus a write headers
+option, to pass to #to_csv</p>
+
+<p>Returns a Hash</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">defaults</span>
+      <span class="vi">@defaults</span> <span class="o">||=</span> <span class="no">CSV</span><span class="o">::</span><span class="no">DEFAULT_OPTIONS</span><span class="o">.</span><span class="n">dup</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">write_headers</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></div></div></div></div></body></html>

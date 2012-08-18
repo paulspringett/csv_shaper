@@ -2,6 +2,10 @@
 Core CsvShaper class. Delegates header and row generating.</p></div></div><div class="code"><div class="wrapper">  <span class="k">class</span> <span class="nc">Shaper</span>
     <span class="kp">attr_reader</span> <span class="ss">:header</span><span class="p">,</span> <span class="ss">:rows</span>
     
+    <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+      <span class="kp">attr_accessor</span> <span class="ss">:config</span>
+    <span class="k">end</span>
+    
     <span class="k">def</span> <span class="nf">initialize</span>
       <span class="vi">@rows</span> <span class="o">=</span> <span class="o">[]</span>
       <span class="k">yield</span> <span class="nb">self</span> <span class="k">if</span> <span class="nb">block_given?</span>
@@ -58,6 +62,9 @@ of valid CSV data. Delegated to the Encoder class</p>
 
 <p>Returns a String</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">to_csv</span>
       <span class="no">Encoder</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="vi">@header</span><span class="p">,</span> <span class="vi">@rows</span><span class="p">)</span><span class="o">.</span><span class="n">to_csv</span>
-    <span class="k">end</span>
+    <span class="k">end</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Public: Create an instance of the config and cache it
+for reference by the Encoder later</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">configure</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+       <span class="vi">@config</span> <span class="o">||=</span> <span class="no">CsvShaper</span><span class="o">::</span><span class="no">Config</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span></div></div></div></div></body></html>

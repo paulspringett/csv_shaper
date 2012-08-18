@@ -18,7 +18,7 @@ Primarily calls CsvShaperTemplate.encode, passing through the context (self)</p>
 <span class="sx">      unless defined?(ActionMailer) &amp;&amp; defined?(ActionMailer::Base) &amp;&amp; controller.is_a?(ActionMailer::Base)</span>
 <span class="sx">        @filename ||= &quot;</span><span class="se">\#</span><span class="sx">{controller.action_name}.csv&quot;</span>
 <span class="sx">        controller.response.headers[&quot;Content-Type&quot;] ||= &#39;text/csv&#39;</span>
-<span class="sx">        controller.response.headers[&#39;Content-Disposition&#39;] = &quot;attachment; filename=&#39;</span><span class="se">\#</span><span class="sx">{@filename}&#39;&quot;</span>
+<span class="sx">        controller.response.headers[&#39;Content-Disposition&#39;] = &quot;attachment; filename=\\</span><span class="se">\&quot;\#</span><span class="sx">{@filename}\\</span><span class="se">\&quot;</span><span class="sx">&quot;</span>
 <span class="sx">      end</span>
 
 <span class="sx">      CsvShaperTemplate.encode(self) do |csv|</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>{template.source}</p></div></div><div class="code"><div class="wrapper"><span class="sx">      end</span>

@@ -23,11 +23,14 @@ a CSV String</p>
       <span class="k">end</span>
 
       <span class="n">table</span> <span class="o">=</span> <span class="no">CSV</span><span class="o">::</span><span class="no">Table</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
-      <span class="n">table</span><span class="o">.</span><span class="n">to_csv</span>
+      <span class="n">table</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
     <span class="k">end</span>
     
     <span class="kp">private</span>
-    </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Internal: make use of <code>CSV#values_at</code> to pad out the
+
+    <span class="k">def</span> <span class="nf">options</span>
+      <span class="no">CsvShaper</span><span class="o">::</span><span class="no">Shaper</span><span class="o">.</span><span class="n">config</span> <span class="o">&amp;&amp;</span> <span class="no">CsvShaper</span><span class="o">::</span><span class="no">Shaper</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">options</span> <span class="o">||</span> <span class="p">{}</span>
+    <span class="k">end</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Internal: make use of <code>CSV#values_at</code> to pad out the
 cells into the correct columns for the headers</p>
 
 <p>Returns an Array of Arrays</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">padded_rows</span>

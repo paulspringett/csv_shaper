@@ -151,6 +151,22 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                 "title": "Further Rails integration",
                 "slug": "further-rails-integration"
               },
+              "depth": 3
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 3,
+                "title": "CSV configuration",
+                "slug": "csv-configuration"
+              },
+              "depth": 3
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 3,
+                "title": "Contributing",
+                "slug": "contributing"
+              },
               "depth": 3,
               "children": [
                 {
@@ -295,6 +311,22 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "title": "Further Rails integration",
             "slug": "further-rails-integration"
           },
+          "depth": 3
+        }, {
+          "type": "heading",
+          "data": {
+            "level": 3,
+            "title": "CSV configuration",
+            "slug": "csv-configuration"
+          },
+          "depth": 3
+        }, {
+          "type": "heading",
+          "data": {
+            "level": 3,
+            "title": "Contributing",
+            "slug": "contributing"
+          },
           "depth": 3,
           "children": [
             {
@@ -327,6 +359,22 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
       "outline": [],
       "children": [
         {
+          "type": "file",
+          "data": {
+            "language": {
+              "nameMatchers": [".rb", ".ru", ".gemspec"],
+              "pygmentsLexer": "ruby",
+              "singleLineComment": ["#"],
+              "name": "Ruby"
+            },
+            "sourcePath": "/Users/paul/Sites/csv-shaper/lib/csv_shaper/config.rb",
+            "projectPath": "lib/csv_shaper/config.rb",
+            "targetPath": "csv_shaper/config",
+            "title": "config"
+          },
+          "depth": 2,
+          "outline": []
+        }, {
           "type": "file",
           "data": {
             "language": {

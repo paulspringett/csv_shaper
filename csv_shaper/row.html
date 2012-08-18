@@ -54,7 +54,7 @@ the same name. Otherwise a value will need to be passed also</p>
 <p>Returns an Array of the Row's cells</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">cell</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>
       <span class="n">column</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">to_sym</span>
       
-      <span class="k">if</span> <span class="vi">@model</span> <span class="o">&amp;&amp;</span> <span class="n">value</span><span class="o">.</span><span class="n">nil?</span>
+      <span class="k">if</span> <span class="vi">@model</span> <span class="o">&amp;&amp;</span> <span class="vi">@model</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="n">column</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">value</span><span class="o">.</span><span class="n">nil?</span>
         <span class="vi">@cells</span><span class="o">[</span><span class="n">column</span><span class="o">]</span> <span class="o">=</span> <span class="vi">@model</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
       <span class="k">else</span>
         <span class="vi">@cells</span><span class="o">[</span><span class="n">column</span><span class="o">]</span> <span class="o">=</span> <span class="n">value</span>

@@ -1,8 +1,8 @@
-<!DOCTYPE html><html lang="en"><head><title>CSV Shaper - Annotated Source</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="index"><meta name="groc-project-path" content="README.md"><meta name="groc-github-url" content="https://github.com/paulspringett/csv_shaper"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/paulspringett/paulspringett/blob/master/README.md">README.md</a></div></div><div id="document"><div class="segment"><div class="comments"><div class="wrapper"><h1 id="csv-shaper">CSV Shaper</h1>
+<!DOCTYPE html><html lang="en"><head><title>index</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="index"><meta name="groc-project-path" content="README.md"><meta name="groc-github-url" content="https://github.com/paulspringett/paulspringett"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/paulspringett/paulspringett/blob/master/README.md">README.md</a></div></div><div id="document"><div class="segment"><div class="comments"><div class="wrapper"><h1 id="csv-shaper">CSV Shaper</h1>
 
 <p>Beautiful DSL for creating CSV output in Ruby &amp; Rails.</p>
 
-<p>Creating CSV files in Ruby is painful! CSV Shaper makes life easier! It's ideal for converting database backed models with attrbiutes into CSV output. It can be used without Rails, but works great with ActiveRecord models and even comes with support for it's own template handling.</p>
+<p>Creating CSV files in Ruby is painful! CSV Shaper makes life easier! It's ideal for converting database backed models with attributes into CSV output. It can be used without Rails, but works great with ActiveRecord models and even comes with support for its own template handling.</p>
 
 <p><a href="http://travis-ci.org/paulspringett/csv_shaper"><img src="https://secure.travis-ci.org/paulspringett/csv_shaper.png?branch=master" alt="Build Status" title="" /></a></p>
 
@@ -10,7 +10,7 @@
 
 <h3 id="example-usage">Example Usage</h3>
 
-<pre><code class="ruby">csv_string = CsvShaper::Shaper.encode do |csv|
+<pre><code class="ruby">csv_string = CsvShaper.encode do |csv|
   csv.header :name, :age, :gender, :pet_names
 
   csv.rows @users do |csv, user|
@@ -51,9 +51,22 @@ end
 
 <h3 id="usage-in-rails-30">Usage in Rails 3.0+</h3>
 
-<p>If you're using it in Rails 3.0+ you are already inside the <code>encode</code> block so you can just call the <code>csv</code> object directly.</p>
+<p>When using it in Rails your view template is rendered inside the <code>encode</code> block so you can just call the <code>csv</code> object directly.</p>
 
-<p>Create a Rails view, set the content-type to <code>csv</code> and the handler to <code>shaper</code>, like so</p>
+<p>In Rails the example at the top of the README would simply be:</p>
+
+<pre><code class="ruby">csv.headers :name, :age, :gender, :pet_names
+
+csv.rows @users do |csv, user|
+  csv.cells :name, :age, :gender
+
+  if user.pets.any?
+    csv.cell :pet_names
+  end
+end
+</code></pre>
+
+<p>Create a Rails view, set the content-type to <code>csv</code> and the handler to <code>shaper</code>. For the view of the <code>index</code> action the filename would be:</p>
 
 <pre><code>index.csv.shaper
 </code></pre>
@@ -113,14 +126,14 @@ end
 <pre><code class="ruby">csv.row @user, :name, :age, :location
 </code></pre>
 
-<p>This will call the column names (name, age...) on @user and assign them to the correct cells. The output from the above Ruby might look like:</p>
+<p>This will call the column names (name, age...) on <code>@user</code> and assign them to the correct cells. The output from the above Ruby might look like:</p>
 
 <pre><code>Paul,27,United Kingdom
 </code></pre>
 
 <h4 id="passing-a-model-to-a-block">Passing a model to a block</h4>
 
-<pre><code class="ruby">csv.row @user, do |csv, user|
+<pre><code class="ruby">csv.row @user do |csv, user|
   csv.cells :name, :age
   if user.show_gender?
     csv.cell :gender
@@ -130,7 +143,11 @@ end
 end
 </code></pre>
 
-<p>Any calls here to <code>cell</code> or <code>cells</code> without a second argument are called on the model (<code>user</code>), otherwise the second parameter is used as a static value. The output from the above Ruby might look like:</p>
+<p>Any calls here to <code>cell</code> without a second argument are called on the model (<code>user</code>), otherwise the second parameter is used as a static value.</p>
+
+<p>The <code>cells</code> method only takes a list of Symbols that are called as methods on the model (<code>user</code>).</p>
+
+<p>The output from the above Ruby might look like:</p>
 
 <pre><code>Paul,27,Male,2012-07-25
 </code></pre>
@@ -182,6 +199,32 @@ def index
   @filename = "All users - #{Date.today.to_formatted_s(:db)}.csv"
 end
 </code></pre>
+
+<h3 id="csv-configuration">CSV configuration</h3>
+
+<p>To configure how the CSV output is formatted you can define a configure block, like so:</p>
+
+<pre><code class="ruby">CsvShaper.configure do |config|
+  config.col_sep = "\t"
+  config.write_headers = false
+end
+</code></pre>
+
+<p>Inside the block you can pass any of the standard library <a href="http://ruby-doc.org/stdlib-1.9.2/libdoc/csv/rdoc/CSV.html#DEFAULT_OPTIONS">CSV DEFAULT_OPTIONS</a>, as well as a <code>write_headers</code> option (default: <code>true</code>).
+Setting this to <code>false</code> will exclude the headers from the final CSV output.</p>
+
+<p>If you're using Rails you can put this in an initializer.</p>
+
+<h3 id="contributing">Contributing</h3>
+
+<ol>
+<li>Fork it</li>
+<li>Create a semantically named feature branch</li>
+<li>Write your feature</li>
+<li>Add some tests for it</li>
+<li>Commit your changes &amp; push to GitHub (do not change the gem's version number)</li>
+<li>Submit a pull request with relevant details</li>
+</ol>
 
 <h5 id="hat-tips">Hat tips</h5>
 
