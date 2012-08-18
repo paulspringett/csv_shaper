@@ -60,7 +60,7 @@ module CsvShaper
     def cell(column, value = nil)
       column = column.to_sym
       
-      if @model && value.nil?
+      if @model && @model.respond_to?(column) && value.nil?
         @cells[column] = @model.send(column)
       else
         @cells[column] = value
