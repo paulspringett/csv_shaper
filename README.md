@@ -11,8 +11,8 @@ Annotated source: http://paulspringett.github.com/csv_shaper/
 ### Example Usage
 
 ```ruby
-csv_string = CsvShaper::Shaper.encode do |csv|
-  csv.headers :name, :age, :gender, :pet_names
+csv_string = CsvShaper.encode do |csv|
+  csv.header :name, :age, :gender, :pet_names
   
   csv.rows @users do |csv, user|
     csv.cells :name, :age, :gender
@@ -218,6 +218,22 @@ def index
   @filename = "All users - #{Date.today.to_formatted_s(:db)}.csv"
 end
 ```
+
+### CSV configuration
+
+To configure how the CSV output is formatted you can define a configure block, like so:
+
+```ruby
+CsvShaper.configure do |config|
+  config.col_sep = "\t"
+  config.write_headers = false
+end
+```
+
+Inside the block you can pass any of the standard library [CSV DEFAULT_OPTIONS](http://ruby-doc.org/stdlib-1.9.2/libdoc/csv/rdoc/CSV.html#DEFAULT_OPTIONS), as well as a `write_headers` option (default: `true`).
+Setting this to `false` will exclude the headers from the final CSV output.
+
+If you're using Rails you can put this in an initializer.
 
 ### Contributing
 

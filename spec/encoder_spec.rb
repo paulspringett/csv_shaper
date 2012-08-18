@@ -4,6 +4,12 @@ require 'fixtures/user'
 describe CsvShaper::Encoder do
   let(:user) { User.new(name: 'Paul', age: 27, gender: 'Male') }
   
+  let(:config) {
+    CsvShaper::Config.new do |c|
+      c.write_headers = true
+    end
+  }
+  
   it "should raise an exception if the headers are missing" do
     expect {
       CsvShaper::Encoder.new(nil)
@@ -30,6 +36,7 @@ describe CsvShaper::Encoder do
   }
   
   it "should encode a Shaper instance to a CSV string" do
+    CsvShaper::Shaper.config = config
     encoder = CsvShaper::Encoder.new(csv.header, csv.rows)
     encoder.to_csv.should eq("Full name,Sex,Age\nPaul,Male,27\nBob,Male,31\nJane,Female,23\n,,81\n")
   end

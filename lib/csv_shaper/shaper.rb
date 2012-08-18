@@ -4,6 +4,10 @@ module CsvShaper
   class Shaper
     attr_reader :header, :rows
     
+    class << self
+      attr_accessor :config
+    end
+    
     def initialize
       @rows = []
       yield self if block_given?
@@ -72,5 +76,11 @@ module CsvShaper
     def to_csv
       Encoder.new(@header, @rows).to_csv
     end
+
+    # Public: Create an instance of the config and cache it
+    # for reference by the Encoder later
+    def self.configure(&block)
+       @config ||= CsvShaper::Config.new(&block)
+     end
   end
 end
