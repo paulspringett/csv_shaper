@@ -41,5 +41,18 @@ describe CsvShaper::Row do
       row.cell :foo, nil
       row.cells.should eq({ foo: nil, gender: 'Male' })
     end
+    
+    it "should not send column to model if two args are passed" do
+      row = CsvShaper::Row.new(user, :gender)
+      row.cell :name, 'Another name'
+      row.cells.should eq({ name: 'Another name', gender: 'Male' })
+    end
+    
+    it "should raise an exception of the model does not respond to column, and no value is passed" do
+      row = CsvShaper::Row.new(user, :gender)
+      expect {
+        row.cell :foo
+      }.to raise_error(ArgumentError)
+    end
   end
 end

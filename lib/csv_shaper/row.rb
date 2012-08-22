@@ -57,13 +57,23 @@ module CsvShaper
     # `value` - data to assign to the cell (default: nil)
     #
     # Returns an Array of the Row's cells
-    def cell(column, value = nil)
-      column = column.to_sym
+    def cell(*args)
+      if args.empty?
+        raise ArgumentError, 'no args passed to #cell, you must pass at least a column name'
+      end
       
-      if @model && @model.respond_to?(column) && value.nil?
-        @cells[column] = @model.send(column)
+      column = args.first.to_sym
+      
+      if args.size == 2
+        @cells[column] = args.last
+      elsif args.size == 1
+        if @model && @model.respond_to?(column)
+          @cells[column] = @model.send(column)
+        else
+          raise ArgumentError, "##{column} is not a method on #{@model.class.to_s}, call `csv.cell #{column}, value` instead"
+        end
       else
-        @cells[column] = value
+        raise ArgumentError, 'you can pass a column or a column with a value to #cell'
       end
       
       @cells
