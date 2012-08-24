@@ -1,4 +1,4 @@
-require 'csv'
+require 'fastercsv'
 
 module CsvShaper
   # Encoder
@@ -23,10 +23,10 @@ module CsvShaper
     # Returns a String
     def to_csv
       rows = padded_rows.map do |data|
-        CSV::Row.new(@header.mapped_columns, data, false)
+        FasterCSV::Row.new(@header.mapped_columns, data, false)
       end
 
-      table = CSV::Table.new(rows)
+      table = FasterCSV::Table.new(rows)
       table.to_csv(options)
     end
     
@@ -42,10 +42,10 @@ module CsvShaper
     # Returns an Array of Arrays
     def padded_rows
       rows = @rows.map do |row|
-        CSV::Row.new(row.cells.keys, row.cells.values)
+        FasterCSV::Row.new(row.cells.keys, row.cells.values)
       end
       
-      table = CSV::Table.new(rows)
+      table = FasterCSV::Table.new(rows)
       table.values_at(*@header.columns)
     end
   end
