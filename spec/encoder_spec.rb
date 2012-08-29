@@ -19,18 +19,18 @@ describe CsvShaper::Encoder do
   let(:users) { [User.new(:name => 'Paul', :age => 27, :gender => 'Male'), User.new(:name => 'Bob', :age => 31, :gender => 'Male'), User.new(:name => 'Jane', :age => 23, :gender => 'Female')] }
   let(:csv) {
     CsvShaper::Shaper.new do |csv|
-      csv.headers do |csv|
-        csv.columns :name, :gender, :age
-        csv.mappings :name => "Full name", :gender => "Sex"
+      csv.headers do |headers|
+        headers.columns :name, :gender, :age
+        headers.mappings :name => "Full name", :gender => "Sex"
       end
 
-      csv.rows users do |csv, user|
-        csv.cells :name, :age
-        csv.cell :gender
+      csv.rows users do |rows, user|
+        rows.cells :name, :age
+        rows.cell :gender
       end
 
-      csv.row do |csv|
-      	csv.cell :age, users.map(&:age).reduce(:+)
+      csv.row do |row|
+      	row.cell :age, users.map(&:age).reduce(:+)
       end
     end
   }
