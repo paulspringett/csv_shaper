@@ -17,7 +17,7 @@ describe CsvShaper::Header do
   it "should accept a block with columns and mappings" do
     header = CsvShaper::Header.new do |csv|
       csv.columns :name, :age, :foo
-      csv.mappings name: 'User name'
+      csv.mappings :name => 'User name'
     end
     
     header.columns.should eq [:name, :age, :foo]
@@ -34,8 +34,8 @@ describe CsvShaper::Header do
   it "should merge mappings" do
     header = CsvShaper::Header.new do |csv|
       csv.columns :name, :age, :foo
-      csv.mappings name: 'User name'
-      csv.mappings foo: 'Bar'
+      csv.mappings :name => 'User name'
+      csv.mappings :foo => 'Bar'
     end
 
     header.mapped_columns.should eq ['User name', 'Age', 'Bar']

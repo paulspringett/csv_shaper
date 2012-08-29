@@ -1,4 +1,4 @@
-require 'csv'
+require 'fastercsv'
 
 module CsvShaper
   # Config
@@ -47,7 +47,7 @@ module CsvShaper
     #
     # Returns a Hash
     def defaults
-      @defaults ||= CSV::DEFAULT_OPTIONS.dup.merge(write_headers: true)
+      @defaults ||= FasterCSV::DEFAULT_OPTIONS.dup.merge(:write_headers => true)
     end
   end
 end

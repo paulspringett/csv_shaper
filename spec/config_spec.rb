@@ -9,7 +9,7 @@ describe CsvShaper::Config do
   }
   
   it "should assign options to config" do
-    config.options.should eq({ write_headers: false, col_sep: "\t" })
+    config.options.should eq({ :write_headers => false, :col_sep => "\t" })
   end
   
   it "should exclude the headers if specified" do
