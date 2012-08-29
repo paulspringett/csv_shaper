@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'fixtures/user'
 
 describe CsvShaper::Encoder do
-  let(:user) { User.new(name: 'Paul', age: 27, gender: 'Male') }
+  let(:user) { User.new(:name => 'Paul', :age => 27, :gender => 'Male') }
   
   let(:config) {
     CsvShaper::Config.new do |c|
@@ -16,12 +16,12 @@ describe CsvShaper::Encoder do
     }.to raise_exception(CsvShaper::MissingHeadersError, 'you must define some headers using csv.headers ...')
   end
   
-  let(:users) { [User.new(name: 'Paul', age: 27, gender: 'Male'), User.new(name: 'Bob', age: 31, gender: 'Male'), User.new(name: 'Jane', age: 23, gender: 'Female')] }
+  let(:users) { [User.new(:name => 'Paul', :age => 27, :gender => 'Male'), User.new(:name => 'Bob', :age => 31, :gender => 'Male'), User.new(:name => 'Jane', :age => 23, :gender => 'Female')] }
   let(:csv) {
     CsvShaper::Shaper.new do |csv|
       csv.headers do |csv|
         csv.columns :name, :gender, :age
-        csv.mappings name: "Full name", gender: "Sex"
+        csv.mappings :name => "Full name", :gender => "Sex"
       end
 
       csv.rows users do |csv, user|
