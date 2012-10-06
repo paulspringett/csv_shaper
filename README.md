@@ -235,6 +235,14 @@ Setting this to `false` will exclude the headers from the final CSV output.
 
 If you're using Rails you can put this in an initializer.
 
+To configure CSV output locally to change global behavior you can define a configure hash, like so:
+
+```ruby
+CsvShaper.encode col_sep: "\t" do |csv|
+  ...
+end
+```
+
 ### Contributing
 
 1. Fork it
