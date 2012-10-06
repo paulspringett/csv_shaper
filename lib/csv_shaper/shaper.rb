@@ -8,8 +8,9 @@ module CsvShaper
       attr_accessor :config
     end
     
-    def initialize
+    def initialize(options = {})
       @rows = []
+      local_configuration(options)
       yield self if block_given?
     end
     
@@ -28,8 +29,8 @@ module CsvShaper
     # ```
     #
     # Returns a String
-    def self.encode
-      new.tap { |shaper| yield shaper }.to_csv
+    def self.encode(options = {})
+      new(options).tap { |shaper| yield shaper }.to_csv
     end
     
     # Public: creates a header row for the CSV
@@ -74,13 +75,21 @@ module CsvShaper
     #
     # Returns a String
     def to_csv
-      Encoder.new(@header, @rows).to_csv
+      Encoder.new(@header, @rows).to_csv(@local_config)
     end
 
     # Public: Create an instance of the config and cache it
     # for reference by the Encoder later
     def self.configure(&block)
-       @config ||= CsvShaper::Config.new(&block)
-     end
+      @config ||= CsvShaper::Config.new(&block)
+    end
+    
+    private
+    
+    def local_configuration(options = {})
+      @local_config = CsvShaper::Config.new do |csv|
+        options.each_pair { |k, v| csv.send("#{k}=", v) }
+      end
+    end
   end
 end

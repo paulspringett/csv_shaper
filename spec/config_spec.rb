@@ -27,4 +27,20 @@ describe CsvShaper::Config do
     
     shaper.to_csv.should eq "Paul\t27\tMale\n"
   end
+  
+  it "should allow change configuration locally" do
+    CsvShaper::Shaper.config = config
+    
+    shaper = CsvShaper::Shaper.new col_sep: "," do |csv|
+      csv.headers :name, :age, :gender
+      
+      csv.row do |csv|
+        csv.cell :name, 'Paul'
+        csv.cell :age, '27'
+        csv.cell :gender, 'Male'
+      end
+    end
+    
+    shaper.to_csv.should eq "Paul,27,Male\n"
+  end
 end
