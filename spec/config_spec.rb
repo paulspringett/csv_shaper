@@ -31,7 +31,7 @@ describe CsvShaper::Config do
   it "should allow change configuration locally" do
     CsvShaper::Shaper.config = config
     
-    shaper = CsvShaper::Shaper.new col_sep: "," do |csv|
+    shaper = CsvShaper::Shaper.new(col_sep: ",") do |csv|
       csv.headers :name, :age, :gender
       
       csv.row do |csv|
