@@ -12,8 +12,8 @@ module CsvShaper
   class MissingHeadersError < StandardError; end
 
   # Shortcut the encode method
-  def self.encode(&block)
-    CsvShaper::Shaper.encode(&block)
+  def self.encode(options = {}, &block)
+    CsvShaper::Shaper.encode(options, &block)
   end
 
   def self.configure(&block)

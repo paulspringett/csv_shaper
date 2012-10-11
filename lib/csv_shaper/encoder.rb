@@ -21,19 +21,25 @@ module CsvShaper
     # a CSV String
     #
     # Returns a String
-    def to_csv
+    def to_csv(local_config = nil)
+      csv_options = options.merge(local_options(local_config))
+      
       rows = padded_rows.map do |data|
         CSV::Row.new(@header.mapped_columns, data, false)
       end
-
+      
       table = CSV::Table.new(rows)
-      table.to_csv(options)
+      table.to_csv(csv_options)
     end
     
     private
 
     def options
       CsvShaper::Shaper.config && CsvShaper::Shaper.config.options || {}
+    end
+    
+    def local_options(local_config)
+      local_config && local_config.options || {}
     end
 
     # Internal: make use of `CSV#values_at` to pad out the
