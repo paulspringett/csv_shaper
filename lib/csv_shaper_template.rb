@@ -24,7 +24,7 @@ class CsvShaperHandler
   # Primarily calls CsvShaperTemplate.encode, passing through the context (self)
   def self.call(template)
     %{
-      unless defined?(ActionMailer) && defined?(ActionMailer::Base) && controller.is_a?(ActionMailer::Base)
+      unless controller.nil? || (defined?(ActionMailer) && defined?(ActionMailer::Base) && controller.is_a?(ActionMailer::Base))
         @filename ||= "\#{controller.action_name}.csv"
         controller.response.headers["Content-Type"] ||= 'text/csv'
         controller.response.headers['Content-Disposition'] = "attachment; filename=\\\"\#{@filename}\\\""
