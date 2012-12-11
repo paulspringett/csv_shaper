@@ -17,19 +17,25 @@ Example:</p>
     </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Public: converts the Shaper mapped headers and rows into
 a CSV String</p>
 
-<p>Returns a String</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">to_csv</span>
+<p>Returns a String</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">to_csv</span><span class="p">(</span><span class="n">local_config</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>
+      <span class="n">csv_options</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">local_options</span><span class="p">(</span><span class="n">local_config</span><span class="p">))</span>
+      
       <span class="n">rows</span> <span class="o">=</span> <span class="n">padded_rows</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">data</span><span class="o">|</span>
         <span class="no">CSV</span><span class="o">::</span><span class="no">Row</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="vi">@header</span><span class="o">.</span><span class="n">mapped_columns</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="kp">false</span><span class="p">)</span>
       <span class="k">end</span>
-
+      
       <span class="n">table</span> <span class="o">=</span> <span class="no">CSV</span><span class="o">::</span><span class="no">Table</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
-      <span class="n">table</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+      <span class="n">table</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csv_options</span><span class="p">)</span>
     <span class="k">end</span>
     
     <span class="kp">private</span>
 
     <span class="k">def</span> <span class="nf">options</span>
       <span class="no">CsvShaper</span><span class="o">::</span><span class="no">Shaper</span><span class="o">.</span><span class="n">config</span> <span class="o">&amp;&amp;</span> <span class="no">CsvShaper</span><span class="o">::</span><span class="no">Shaper</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">options</span> <span class="o">||</span> <span class="p">{}</span>
+    <span class="k">end</span>
+    
+    <span class="k">def</span> <span class="nf">local_options</span><span class="p">(</span><span class="n">local_config</span><span class="p">)</span>
+      <span class="n">local_config</span> <span class="o">&amp;&amp;</span> <span class="n">local_config</span><span class="o">.</span><span class="n">options</span> <span class="o">||</span> <span class="p">{}</span>
     <span class="k">end</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Internal: make use of <code>CSV#values_at</code> to pad out the
 cells into the correct columns for the headers</p>
 

@@ -11,7 +11,7 @@
 <h3 id="example-usage">Example Usage</h3>
 
 <pre><code class="ruby">csv_string = CsvShaper.encode do |csv|
-  csv.header :name, :age, :gender, :pet_names
+  csv.headers :name, :age, :gender, :pet_names
 
   csv.rows @users do |csv, user|
     csv.cells :name, :age, :gender
@@ -214,6 +214,13 @@ end
 Setting this to <code>false</code> will exclude the headers from the final CSV output.</p>
 
 <p>If you're using Rails you can put this in an initializer.</p>
+
+<p>To configure CSV output locally to change global behavior you can define a configure hash, like so:</p>
+
+<pre><code class="ruby">CsvShaper.encode(col_sep: "\t") do |csv|
+  ...
+end
+</code></pre>
 
 <h3 id="contributing">Contributing</h3>
 

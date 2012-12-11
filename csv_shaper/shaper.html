@@ -6,8 +6,9 @@ Core CsvShaper class. Delegates header and row generating.</p></div></div><div c
       <span class="kp">attr_accessor</span> <span class="ss">:config</span>
     <span class="k">end</span>
     
-    <span class="k">def</span> <span class="nf">initialize</span>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
       <span class="vi">@rows</span> <span class="o">=</span> <span class="o">[]</span>
+      <span class="n">local_configuration</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
       <span class="k">yield</span> <span class="nb">self</span> <span class="k">if</span> <span class="nb">block_given?</span>
     <span class="k">end</span>
     </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Public: creates a new instance of Shaper taps it with
@@ -24,8 +25,8 @@ puts data
 =&gt; "Name,Age,Gender\n'Joe Bloggs',25,'M'\n'John Smith',34,'M'" 
 </code></pre>
 
-<p>Returns a String</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">encode</span>
-      <span class="kp">new</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">shaper</span><span class="o">|</span> <span class="k">yield</span> <span class="n">shaper</span> <span class="p">}</span><span class="o">.</span><span class="n">to_csv</span>
+<p>Returns a String</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">encode</span><span class="p">(</span><span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
+      <span class="kp">new</span><span class="p">(</span><span class="n">options</span><span class="p">)</span><span class="o">.</span><span class="n">tap</span> <span class="p">{</span> <span class="o">|</span><span class="n">shaper</span><span class="o">|</span> <span class="k">yield</span> <span class="n">shaper</span> <span class="p">}</span><span class="o">.</span><span class="n">to_csv</span>
     <span class="k">end</span>
     </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Public: creates a header row for the CSV
 This is delegated to the Header class
@@ -61,10 +62,18 @@ See row.rb for usage examples</p>
 of valid CSV data. Delegated to the Encoder class</p>
 
 <p>Returns a String</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">to_csv</span>
-      <span class="no">Encoder</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="vi">@header</span><span class="p">,</span> <span class="vi">@rows</span><span class="p">)</span><span class="o">.</span><span class="n">to_csv</span>
+      <span class="no">Encoder</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="vi">@header</span><span class="p">,</span> <span class="vi">@rows</span><span class="p">)</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="vi">@local_config</span><span class="p">)</span>
     <span class="k">end</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Public: Create an instance of the config and cache it
 for reference by the Encoder later</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">configure</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-       <span class="vi">@config</span> <span class="o">||=</span> <span class="no">CsvShaper</span><span class="o">::</span><span class="no">Config</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-     <span class="k">end</span>
+      <span class="vi">@config</span> <span class="o">||=</span> <span class="no">CsvShaper</span><span class="o">::</span><span class="no">Config</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+    <span class="k">end</span>
+    
+    <span class="kp">private</span>
+    
+    <span class="k">def</span> <span class="nf">local_configuration</span><span class="p">(</span><span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
+      <span class="vi">@local_config</span> <span class="o">=</span> <span class="no">CsvShaper</span><span class="o">::</span><span class="no">Config</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">csv</span><span class="o">|</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">each_pair</span> <span class="p">{</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">|</span> <span class="n">csv</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">k</span><span class="si">}</span><span class="s2">=&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="p">}</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span></div></div></div></div></body></html>

@@ -15,7 +15,7 @@ Template handler for Rails</p></div></div><div class="code"><div class="wrapper"
 Set response headers with filename
 Primarily calls CsvShaperTemplate.encode, passing through the context (self)</p></div></div><div class="code"><div class="wrapper">  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
     <span class="sx">%{</span>
-<span class="sx">      unless defined?(ActionMailer) &amp;&amp; defined?(ActionMailer::Base) &amp;&amp; controller.is_a?(ActionMailer::Base)</span>
+<span class="sx">      if ( controller.present? ) &amp;&amp; !( defined?(ActionMailer) &amp;&amp; defined?(ActionMailer::Base) &amp;&amp; controller.is_a?(ActionMailer::Base) )</span>
 <span class="sx">        @filename ||= &quot;</span><span class="se">\#</span><span class="sx">{controller.action_name}.csv&quot;</span>
 <span class="sx">        controller.response.headers[&quot;Content-Type&quot;] ||= &#39;text/csv&#39;</span>
 <span class="sx">        controller.response.headers[&#39;Content-Disposition&#39;] = &quot;attachment; filename=\\</span><span class="se">\&quot;\#</span><span class="sx">{@filename}\\</span><span class="se">\&quot;</span><span class="sx">&quot;</span>

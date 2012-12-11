@@ -51,13 +51,23 @@ the same name. Otherwise a value will need to be passed also</p>
 <p><code>column</code> - Symbol of the column to add to value to
 <code>value</code> - data to assign to the cell (default: nil)</p>
 
-<p>Returns an Array of the Row's cells</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">cell</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>
-      <span class="n">column</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">to_sym</span>
+<p>Returns an Array of the Row's cells</p></div></div><div class="code"><div class="wrapper">    <span class="k">def</span> <span class="nf">cell</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">empty?</span>
+        <span class="k">raise</span> <span class="no">ArgumentError</span><span class="p">,</span> <span class="s1">&#39;no args passed to #cell, you must pass at least a column name&#39;</span>
+      <span class="k">end</span>
       
-      <span class="k">if</span> <span class="vi">@model</span> <span class="o">&amp;&amp;</span> <span class="vi">@model</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="n">column</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">value</span><span class="o">.</span><span class="n">nil?</span>
-        <span class="vi">@cells</span><span class="o">[</span><span class="n">column</span><span class="o">]</span> <span class="o">=</span> <span class="vi">@model</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+      <span class="n">column</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">to_sym</span>
+      
+      <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">2</span>
+        <span class="vi">@cells</span><span class="o">[</span><span class="n">column</span><span class="o">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">last</span>
+      <span class="k">elsif</span> <span class="n">args</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="vi">@model</span> <span class="o">&amp;&amp;</span> <span class="vi">@model</span><span class="o">.</span><span class="n">respond_to?</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+          <span class="vi">@cells</span><span class="o">[</span><span class="n">column</span><span class="o">]</span> <span class="o">=</span> <span class="vi">@model</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+        <span class="k">else</span>
+          <span class="k">raise</span> <span class="no">ArgumentError</span><span class="p">,</span> <span class="s2">&quot;#</span><span class="si">#{</span><span class="n">column</span><span class="si">}</span><span class="s2"> is not a method on </span><span class="si">#{</span><span class="vi">@model</span><span class="o">.</span><span class="n">class</span><span class="o">.</span><span class="n">to_s</span><span class="si">}</span><span class="s2">, call `csv.cell </span><span class="si">#{</span><span class="n">column</span><span class="si">}</span><span class="s2">, value` instead&quot;</span>
+        <span class="k">end</span>
       <span class="k">else</span>
-        <span class="vi">@cells</span><span class="o">[</span><span class="n">column</span><span class="o">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">raise</span> <span class="no">ArgumentError</span><span class="p">,</span> <span class="s1">&#39;you can pass a column or a column with a value to #cell&#39;</span>
       <span class="k">end</span>
       
       <span class="vi">@cells</span>
