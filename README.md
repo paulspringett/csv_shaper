@@ -5,6 +5,7 @@ Beautiful DSL for creating CSV output in Ruby & Rails.
 Creating CSV files in Ruby is painful! CSV Shaper makes life easier! It's ideal for converting database backed models with attributes into CSV output. It can be used without Rails, but works great with ActiveRecord models and even comes with support for its own template handling.
 
 [![Build Status](https://secure.travis-ci.org/paulspringett/csv_shaper.png?branch=master)](http://travis-ci.org/paulspringett/csv_shaper)
+[![Code Climate](https://codeclimate.com/github/paulspringett/csv_shaper.png)](https://codeclimate.com/github/paulspringett/csv_shaper)
 
 Annotated source: http://paulspringett.github.com/csv_shaper/
 
@@ -13,10 +14,10 @@ Annotated source: http://paulspringett.github.com/csv_shaper/
 ```ruby
 csv_string = CsvShaper.encode do |csv|
   csv.headers :name, :age, :gender, :pet_names
-  
+
   csv.rows @users do |csv, user|
     csv.cells :name, :age, :gender
-    
+
     if user.pets.any?
       csv.cell :pet_names
     end
@@ -65,7 +66,7 @@ csv.headers :name, :age, :gender, :pet_names
 
 csv.rows @users do |csv, user|
   csv.cells :name, :age, :gender
-  
+
   if user.pets.any?
     csv.cell :pet_names
   end
@@ -75,7 +76,7 @@ end
 Create a Rails view, set the content-type to `csv` and the handler to `shaper`. For the view of the `index` action the filename would be:
 
     index.csv.shaper
-    
+
 then just start defining your headers and rows as per the examples.
 
 ### Headers
@@ -162,7 +163,7 @@ Any calls here to `cell` without a second argument are called on the model (`use
 The `cells` method only takes a list of Symbols that are called as methods on the model (`user`).
 
 The output from the above Ruby might look like:
- 
+
 ```
 Paul,27,Male,2012-07-25
 ```
