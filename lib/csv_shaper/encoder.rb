@@ -23,7 +23,6 @@ module CsvShaper
     # Returns a String
     def to_csv(local_config = nil)
       csv_options = options.merge(local_options(local_config))
-
       rows = padded_rows.map do |data|
         CSV::Row.new(@header.mapped_columns, data, false)
       end

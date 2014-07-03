@@ -12,6 +12,7 @@ module CsvShaper
 
     def initialize
       @options = {}
+      @options.merge!(CUSTOM_DEFAULT_OPTIONS)
       yield self if block_given?
     end
 

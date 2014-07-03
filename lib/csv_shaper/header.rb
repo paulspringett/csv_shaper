@@ -21,7 +21,7 @@ module CsvShaper
     def initialize(*args)
       @mappings = {}
       @columns = []
-      @header_inflector = CsvShaper::Shaper.config.options[:header_inflector]
+      @inflector = CsvShaper::Shaper.config.options[:header_inflector]
 
       if block_given?
         yield self
@@ -68,8 +68,8 @@ module CsvShaper
     # header.inflector :titleize
     # ```
     # `:titleize` - one of ruby inflectors
-    def inflector(inflector = @header_inflector)
-      @header_inflector = inflector
+    def inflector(header_inflector)
+      @inflector = header_inflector
     end
 
     # Public: converts columns and mappings into mapped columns
@@ -80,7 +80,7 @@ module CsvShaper
     # Returns an Array of Strings
     def mapped_columns
       @columns.map do |column|
-        @mappings[column] || column.to_s.send(@header_inflector)
+        @mappings[column] || column.to_s.send(@inflector)
       end
     end
 
