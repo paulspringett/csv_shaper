@@ -122,6 +122,24 @@ Full name,Age,Region
 
 The mappings are useful for pretty-ing up the names when creating the CSV. When creating cells below you should still use the column names, not the mapping names. eg. `:name` not `'Full name'`
 
+#### Specify the header inflector method
+
+Sometimes you may wish to control how headers are transformed from the symbol form.  The default `inflector` is set to `:humanize`.
+
+```ruby
+csv.headers do |csv|
+  csv.columns :full_name, :age, :full_address
+  csv.inflector :titleize
+end
+```
+
+This would create headers like so:
+
+```csv
+Full Name,Age,Full Address
+```
+
+
 ### Rows & Cells
 
 CSV Shaper allows you to define rows and cells in a variety of ways.
