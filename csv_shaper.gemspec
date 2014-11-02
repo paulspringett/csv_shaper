@@ -13,6 +13,8 @@ Gem::Specification.new do |gem|
     comes with support for it's own template handling.
   }
 
+  gem.licenses      = ['MIT']
+
   gem.homepage      = "http://github.com/paulspringett/csv_shaper"
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
