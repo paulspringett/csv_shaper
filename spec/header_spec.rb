@@ -4,7 +4,7 @@ require 'fixtures/user'
 describe CsvShaper::Header do
 
   before(:each) do
-    CsvShaper::Shaper.stub_chain(:config, :options).and_return({ header_inflector: :humanize})
+    CsvShaper::Shaper.stub_chain(:config, :options).and_return({ header_inflector: :humanize })
   end
 
   it "should accept and store a list of symbols" do
