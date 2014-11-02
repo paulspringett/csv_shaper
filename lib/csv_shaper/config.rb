@@ -4,11 +4,15 @@ module CsvShaper
   # Config
   # Configure the standard CSV default options
   # as well the option to output the header row
+
   class Config
+    CUSTOM_DEFAULT_OPTIONS = { header_inflector: :humanize }
+
     attr_reader :options
 
     def initialize
       @options = {}
+      @options.merge!(CUSTOM_DEFAULT_OPTIONS)
       yield self if block_given?
     end
 
@@ -47,7 +51,9 @@ module CsvShaper
     #
     # Returns a Hash
     def defaults
-      @defaults ||= CSV::DEFAULT_OPTIONS.dup.merge(write_headers: true)
+      @defaults ||= CSV::DEFAULT_OPTIONS.dup.
+        merge(write_headers: true).
+        merge(CUSTOM_DEFAULT_OPTIONS)
     end
   end
 end
