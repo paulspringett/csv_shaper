@@ -10,7 +10,7 @@ describe CsvShaper::Config do
   }
 
   it "should assign options to config" do
-    config.options.should eq({ write_headers: false, col_sep: "\t", header_inflector: :titleize })
+    expect(config.options).to eq({ write_headers: false, col_sep: "\t", header_inflector: :titleize })
   end
 
   it "should exclude the headers if specified" do
@@ -26,7 +26,7 @@ describe CsvShaper::Config do
       end
     end
 
-    shaper.to_csv.should eq "Paul\t27\tMale\n"
+    expect(shaper.to_csv).to eq "Paul\t27\tMale\n"
   end
 
   it "should allow change configuration locally" do
@@ -42,7 +42,7 @@ describe CsvShaper::Config do
       end
     end
 
-    shaper.to_csv.should eq "Paul,27,Male\n"
+    expect(shaper.to_csv).to eq "Paul,27,Male\n"
   end
 
   it "should allow change inflector locally" do
@@ -58,6 +58,6 @@ describe CsvShaper::Config do
       end
     end
 
-    shaper.to_csv.should eq "Full Name,Age,Gender\nPaul,27,Male\n"
+    expect(shaper.to_csv).to eq "Full Name,Age,Gender\nPaul,27,Male\n"
   end
 end

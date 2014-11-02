@@ -38,6 +38,6 @@ describe CsvShaper::Encoder do
   it "should encode a Shaper instance to a CSV string" do
     CsvShaper::Shaper.config = config
     encoder = CsvShaper::Encoder.new(csv.header, csv.rows)
-    encoder.to_csv.should eq("Full name,Sex,Age\nPaul,Male,27\nBob,Male,31\nJane,Female,23\n,,81\n")
+    expect(encoder.to_csv).to eq("Full name,Sex,Age\nPaul,Male,27\nBob,Male,31\nJane,Female,23\n,,81\n")
   end
 end
