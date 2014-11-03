@@ -4,8 +4,12 @@ module CsvShaper
   class Shaper
     attr_reader :header, :rows
 
-    class << self
-      attr_accessor :config
+    def self.config
+      @config ||= Config.new
+    end
+
+    def self.config=(new_config)
+      @config = new_config
     end
 
     def initialize(options = {})
