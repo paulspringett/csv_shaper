@@ -27,6 +27,10 @@ module CsvShaper
         CSV::Row.new(@header.mapped_columns, data, false)
       end
 
+      if csv_options[:write_headers] && rows.empty?
+        rows << CSV::Row.new(@header.mapped_columns, [], true)
+      end
+
       table = CSV::Table.new(rows)
       csv_options.except!(*custom_options.keys)
       table.to_csv(csv_options)
