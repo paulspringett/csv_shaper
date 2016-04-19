@@ -17,7 +17,7 @@ end
 # Template handler for Rails
 class CsvShaperHandler
   cattr_accessor :default_format
-  self.default_format = Mime::CSV
+  self.default_format = Mime[:csv]
 
   # Expected `call` class method
   # Set response headers with filename
