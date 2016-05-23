@@ -264,6 +264,12 @@ CsvShaper.encode(col_sep: "\t") do |csv|
 end
 ```
 
+To configure Rails template-specific CSV output, use the `config` method on the `csv` object:
+
+```ruby
+csv.config.col_sep = "\t"
+```
+
 ### Contributing
 
 1. Fork it
