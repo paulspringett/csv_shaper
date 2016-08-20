@@ -27,7 +27,7 @@ end
 
 ### Install
 
-**Requires Ruby 2.1+**
+**Requires Ruby 2.2+**
 
 Install using Rubygems
 
