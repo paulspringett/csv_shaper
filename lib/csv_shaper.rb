@@ -21,4 +21,4 @@ module CsvShaper
   end
 end
 
-require "csv_shaper_template" if defined?(ActionView::Template)
+require "csv_shaper_handler" if defined?(ActionView::Template)
