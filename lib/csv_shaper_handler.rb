@@ -9,7 +9,7 @@ class CsvShaperHandler
   # Expected `call` class method
   # Set response headers with filename
   # Primarily calls CsvShaperTemplate.encode, passing through the context (self)
-  def self.call(template)
+  def self.call(template, source = nil)
     %{
       if ( controller.present? ) && !( defined?(ActionMailer) && defined?(ActionMailer::Base) && controller.is_a?(ActionMailer::Base) )
         @filename ||= "\#{controller.action_name}.csv"
@@ -18,7 +18,7 @@ class CsvShaperHandler
       end
 
       CsvShaperTemplate.encode(self) do |csv|
-        #{template.source}
+        #{source || template.source}
       end
     }
   end
