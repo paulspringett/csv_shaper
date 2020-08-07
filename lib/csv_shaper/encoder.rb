@@ -33,7 +33,7 @@ module CsvShaper
 
       table = CSV::Table.new(rows)
       csv_options.except!(*custom_options.keys)
-      table.to_csv(csv_options)
+      table.to_csv(**csv_options)
     end
 
     private
