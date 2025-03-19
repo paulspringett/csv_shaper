@@ -4,10 +4,7 @@ Beautiful DSL for creating CSV output in Ruby & Rails.
 
 Creating CSV files in Ruby is painful! CSV Shaper makes life easier! It's ideal for converting database backed models with attributes into CSV output. It can be used without Rails, but works great with ActiveRecord models and even comes with support for its own template handling.
 
-[![Build Status](https://secure.travis-ci.org/paulspringett/csv_shaper.png?branch=master)](http://travis-ci.org/paulspringett/csv_shaper)
-[![Code Climate](https://codeclimate.com/github/paulspringett/csv_shaper.png)](https://codeclimate.com/github/paulspringett/csv_shaper)
-
-Annotated source: http://paulspringett.github.com/csv_shaper/
+Annotated source: http://paulspringett.github.io/csv_shaper/
 
 ### Example Usage
 
