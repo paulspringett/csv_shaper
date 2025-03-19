@@ -19,7 +19,7 @@ jobs:
     - name: Set up Ruby 3.4
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.4.x
+        ruby-version: 3.4.2
 
     - name: Publish to GPR
       run: |
