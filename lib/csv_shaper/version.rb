@@ -1,4 +1,4 @@
-# 1
+# 2
 module CsvShaper
   VERSION = "1.4.0"
 end
