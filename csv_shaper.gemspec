@@ -23,7 +23,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = CsvShaper::VERSION
 
-  gem.add_dependency 'activesupport', '>= 3.0.0'
+  gem.add_dependency 'activesupport'
   gem.add_dependency 'csv' if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('3.3')
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'rake'
